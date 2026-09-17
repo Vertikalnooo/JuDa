@@ -1,91 +1,48 @@
-const exercises=[
-{name:"Жим штанги лёжа",muscle:"Грудь",type:"Базовое",icon:"🏋️"},
-{name:"Приседания со штангой",muscle:"Ноги",type:"Базовое",icon:"🦵"},
-{name:"Тяга верхнего блока",muscle:"Спина",type:"Базовое",icon:"💪"},
-{name:"Разводка гантелей лёжа",muscle:"Грудь",type:"Изолирующее",icon:"🏋️"},
-{name:"Подтягивания",muscle:"Спина",type:"Базовое",icon:"🔝"},
-{name:"Жим гантелей сидя",muscle:"Плечи",type:"Базовое",icon:"🏋️"},
-{name:"Выпады с гантелями",muscle:"Ноги",type:"Базовое",icon:"🦵"},
-{name:"Разгибание рук на блоке",muscle:"Руки",type:"Изолирующее",icon:"💪"}
-];
-
-const defaultPrograms=[
-{id:1,name:"Силовая база",days:4,weeks:8,active:true,workouts:[
-{name:"Верх тела",exercises:[{name:"Жим штанги лёжа",muscle:"Грудь",sets:4,reps:8,weight:80},{name:"Тяга верхнего блока",muscle:"Спина",sets:3,reps:10,weight:60},{name:"Жим гантелей сидя",muscle:"Плечи",sets:3,reps:10,weight:24},{name:"Разгибание рук на блоке",muscle:"Руки",sets:3,reps:12,weight:25}]},
-{name:"Низ тела",exercises:[]},{name:"Верх тела 2",exercises:[]},{name:"Низ тела 2",exercises:[]}]}
-];
-let programs=JSON.parse(localStorage.getItem("juda_programs")||"null")||defaultPrograms;
-let draft={name:"",days:4,workouts:[]},editingDayIndex=null;
 const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
-function saveData(){localStorage.setItem("juda_programs",JSON.stringify(programs))}
-function toast(t){const x=$("#toast");x.textContent=t;x.classList.add("show");clearTimeout(window.__t);window.__t=setTimeout(()=>x.classList.remove("show"),1700)}
-function screen(id){$$(".screen").forEach(x=>x.classList.toggle("active",x.id===id));$$(".nav-item").forEach(x=>x.classList.toggle("active",x.dataset.screen===id));window.scrollTo({top:0,behavior:"smooth"})}
-function renderPrograms(){
- const list=$("#programList");list.innerHTML="";
- programs.forEach((p,pi)=>{
-  const b=document.createElement("button");b.className="program-row";
-  b.innerHTML=`<span class="program-icon">${p.active?"💪":"🏋️"}</span><span><b>${escapeHtml(p.name)}</b><small>${p.days} дня · ${p.workouts.length} тренировок</small></span><strong>→</strong>`;
-  b.onclick=()=>openProgram(pi);list.appendChild(b);
- });
- const active=programs.find(p=>p.active)||programs[0];
- if(active){$("#activeProgramName").textContent=active.name;$("#activeProgramMeta").textContent=`${active.days} дня в неделю · ${active.weeks||8} недель`}
- updateHome(active);
-}
-function updateHome(p){if(!p)return;const w=p.workouts.find(x=>x.exercises?.length)||p.workouts[0];if(w){$("#homeWorkoutName").textContent=w.name;$("#homeWorkoutExercises").textContent=`${w.exercises?.length||0} упражнений`;}}
-function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m]))}
-function openProgram(pi){const p=programs[pi];draft=JSON.parse(JSON.stringify(p));renderEditor();screen("editorScreen")}
-function newProgram(){draft={id:Date.now(),name:"",days:4,weeks:8,active:false,workouts:[]};ensureDays();renderEditor();screen("editorScreen")}
-function ensureDays(){while(draft.workouts.length<Number(draft.days))draft.workouts.push({name:`День ${draft.workouts.length+1}`,exercises:[]});if(draft.workouts.length>Number(draft.days))draft.workouts=draft.workouts.slice(0,Number(draft.days))}
-function renderEditor(){
- $("#programName").value=draft.name;$("#programDays").value=draft.days;const box=$("#editorDays");box.innerHTML="";
- draft.workouts.forEach((w,i)=>{const card=document.createElement("article");card.className="day-card";card.innerHTML=`<div class="day-card-head"><div><h3>${escapeHtml(w.name)}</h3><p>${w.exercises.length} упражнений</p></div><button>→</button></div>`;card.querySelector("button").onclick=()=>openDay(i);box.appendChild(card)})
-}
-function openDay(i){editingDayIndex=i;$("#dayTitle").textContent=draft.workouts[i].name||`День ${i+1}`;$("#dayName").value=draft.workouts[i].name;renderDay();screen("dayEditorScreen")}
-function renderDay(){
- const box=$("#dayExercises");box.innerHTML="";const day=draft.workouts[editingDayIndex];
- if(!day.exercises.length){box.innerHTML=`<div class="empty-card"><span>＋</span><h2>Пока нет упражнений</h2><p>Добавь первое упражнение в эту тренировку.</p></div>`;return}
- day.exercises.forEach((e,i)=>{const card=document.createElement("article");card.className="day-card";
- card.innerHTML=`<div class="editor-exercise"><span class="exercise-photo">${e.icon||"🏋️"}</span><div><b>${escapeHtml(e.name)}</b><small>${e.muscle||""}</small></div><button class="delete-btn">×</button></div><div class="set-controls"><label>Подходы<input type="number" min="1" max="20" value="${e.sets||3}"></label><label>Повторы<input type="number" min="1" max="100" value="${e.reps||10}"></label><label>Вес, кг<input type="number" min="0" step="0.5" value="${e.weight||0}"></label><label>Отдых, сек<input type="number" min="0" value="${e.rest||90}"></label></div>`;
- const inputs=$$("input",card); // placeholder, overwritten below
- const fields=card.querySelectorAll("input");["sets","reps","weight","rest"].forEach((key,j)=>fields[j].oninput=()=>day.exercises[i][key]=Number(fields[j].value));
- card.querySelector(".delete-btn").onclick=()=>{day.exercises.splice(i,1);renderDay()};box.appendChild(card)})
-}
-function renderPicker(filter=""){
- const box=$("#pickerList");box.innerHTML="";const q=filter.toLowerCase();
- exercises.filter(e=>e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q)).forEach(e=>{
-  const b=document.createElement("button");b.className="exercise-row";b.innerHTML=`<span class="exercise-photo">${e.icon}</span><span><b>${escapeHtml(e.name)}</b><small>${e.muscle} · ${e.type}</small></span><strong>＋</strong>`;
-  b.onclick=()=>{draft.workouts[editingDayIndex].exercises.push({...e,sets:3,reps:10,weight:0,rest:90});toast("Упражнение добавлено");screen("dayEditorScreen");renderDay()};box.appendChild(b)
- })
-}
-function openActiveWorkout(){
- const p=programs.find(x=>x.active)||programs[0],w=p?.workouts.find(x=>x.exercises?.length)||p?.workouts[0];
- if(!w){toast("Сначала создай тренировку");return}
- $("#activeWorkoutTitle").textContent=w.name;const list=w.exercises.length?w.exercises:[{name:"Добавь упражнения",sets:1,reps:1,weight:0}];
- renderActiveExercise(list[0],list.length);screen("activeWorkoutScreen");
-}
-function renderActiveExercise(e,total){$("#activeExerciseName").textContent=e.name;$("#activeExerciseHeading").textContent=e.name;$("#exerciseCounter").textContent=`1 / ${total}`;$("#workoutProgress").style.width=(100/Math.max(total,1))+"%";const box=$("#activeSets");box.innerHTML="";for(let i=1;i<=(e.sets||3);i++){const b=document.createElement("button");b.className="set-row"+(i===1?" current":"");b.innerHTML=`<span>${i}</span><strong>${e.weight||0} кг × ${e.reps||10}</strong><i>${i===1?"→":""}</i>`;b.onclick=()=>{b.classList.add("completed");b.classList.remove("current");b.querySelector("i").textContent="✓"};box.appendChild(b)}}
-function renderExerciseList(id,filter=""){const box=$(id);box.innerHTML="";const q=filter.toLowerCase();exercises.filter(e=>e.name.toLowerCase().includes(q)||e.muscle.toLowerCase().includes(q)).forEach(e=>{const b=document.createElement("button");b.className="exercise-row";b.innerHTML=`<span class="exercise-photo">${e.icon}</span><span><b>${escapeHtml(e.name)}</b><small>${e.muscle} · ${e.type}</small></span><strong>›</strong>`;b.onclick=()=>toast(e.name);box.appendChild(b)})}
-
-$$("[data-screen]").forEach(b=>b.onclick=()=>screen(b.dataset.screen));
-$$("[data-open-workout]").forEach(b=>b.onclick=openActiveWorkout);
-$("#createProgramBtn").onclick=newProgram;$("#createProgramBtn2").onclick=newProgram;
-$("#programDays").onchange=e=>{draft.days=Number(e.target.value);ensureDays();renderEditor()};
-$("#programName").oninput=e=>draft.name=e.target.value;
-$("#addWorkoutDayBtn").onclick=()=>{draft.days++;ensureDays();$("#programDays").value=draft.days;renderEditor()};
-$("#saveProgramBtn").onclick=()=>{draft.name=draft.name.trim()||"Моя программа";ensureDays();const old=programs.findIndex(p=>p.id===draft.id);if(old>=0)programs[old]=draft;else programs.push(draft);saveData();renderPrograms();toast("Программа сохранена");setTimeout(()=>screen("workoutsScreen"),300)};
-$("#backProgramBtn")?.addEventListener("click",()=>screen("workoutsScreen"));
-$$("[data-back-workouts]").forEach(b=>b.onclick=()=>screen("workoutsScreen"));
-$("#saveDayBtn").onclick=()=>{const n=$("#dayName").value.trim()||`День ${editingDayIndex+1}`;draft.workouts[editingDayIndex].name=n;$("#dayTitle").textContent=n;toast("Тренировка сохранена");setTimeout(()=>screen("editorScreen"),250)};
-$("#addExerciseBtn").onclick=()=>{renderPicker();screen("exercisePickerScreen")};
-$$("[data-back-editor]").forEach(b=>b.onclick=()=>screen("editorScreen"));$$("[data-back-day]").forEach(b=>b.onclick=()=>screen("dayEditorScreen"));
-$("#pickerSearch").oninput=e=>renderPicker(e.target.value);$("#exerciseSearch").oninput=e=>renderExerciseList("#exerciseList",e.target.value);
-$$(".segmented button").forEach(b=>b.onclick=()=>{$$(".segmented button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");const ready=b.dataset.programTab==="ready";$("#minePrograms").classList.toggle("hidden",ready);$("#readyPrograms").classList.toggle("hidden",!ready)});
-$$("[data-template]").forEach(b=>b.onclick=()=>{draft={id:Date.now(),name:b.dataset.template,days:4,weeks:8,active:false,workouts:[]};ensureDays();renderEditor();screen("editorScreen");toast("Шаблон добавлен в конструктор")});
-$("#addBtn").onclick=()=>$("#quickAdd").classList.add("open");$("#closeAdd").onclick=()=>$("#quickAdd").classList.remove("open");$("#quickAdd").onclick=e=>{if(e.target.id==="quickAdd")$("#quickAdd").classList.remove("open")};
-$$("[data-quick]").forEach(b=>b.onclick=()=>{if(b.dataset.quick==="workout"){newProgram();$("#quickAdd").classList.remove("open")}else{toast("Раздел "+b.querySelector("span").textContent+" будет подключён следующим этапом");$("#quickAdd").classList.remove("open")}});
-$("#notifyBtn").onclick=()=>toast("Уведомлений пока нет");
-let timerSeconds=90,timerRunning=false,timerInterval;function renderTimer(){const m=String(Math.floor(timerSeconds/60)).padStart(2,"0"),s=String(timerSeconds%60).padStart(2,"0");$("#timer").textContent=`${m}:${s}`}
-$("#timerBtn").onclick=()=>{if(timerRunning){clearInterval(timerInterval);timerRunning=false;$("#timerBtn").textContent="▶";return}timerRunning=true;$("#timerBtn").textContent="Ⅱ";timerInterval=setInterval(()=>{timerSeconds--;if(timerSeconds<=0){timerSeconds=0;clearInterval(timerInterval);timerRunning=false;$("#timerBtn").textContent="▶";toast("Отдых завершён")}renderTimer()},1000)};
-$("#finishSetBtn").onclick=()=>{const current=$(".set-row.current");if(current){current.classList.remove("current");current.classList.add("completed");current.querySelector("i").textContent="✓";const next=current.nextElementSibling;if(next){next.classList.add("current");next.querySelector("i").textContent="→";toast("Подход сохранён")}else toast("Упражнение завершено")}};
-
-renderPrograms();renderExerciseList("#exerciseList");renderPicker();
+const KEY="juda_v5_state";
+const catalog=[
+["Жим штанги лёжа","Грудь","Базовое"],["Приседания со штангой","Ноги","Базовое"],["Тяга верхнего блока","Спина","Базовое"],["Разводка гантелей лёжа","Грудь","Изолирующее"],["Подтягивания","Спина","Базовое"],["Жим гантелей сидя","Плечи","Базовое"],["Выпады с гантелями","Ноги","Базовое"],["Разгибание рук на блоке","Руки","Изолирующее"],["Сгибание рук с гантелями","Руки","Изолирующее"],["Румынская тяга","Ноги","Базовое"]
+];
+const starter={id:"p1",name:"Силовая база",daysPerWeek:4,weeks:8,active:true,days:[
+{name:"Верх тела",exercises:[{name:"Жим штанги лёжа",sets:3,reps:8,weight:60,rest:90},{name:"Тяга верхнего блока",sets:3,reps:10,weight:45,rest:90},{name:"Жим гантелей сидя",sets:3,reps:10,weight:18,rest:90}]},
+{name:"Низ тела",exercises:[{name:"Приседания со штангой",sets:3,reps:8,weight:70,rest:120}]},
+{name:"Спина + плечи",exercises:[{name:"Подтягивания",sets:3,reps:8,weight:0,rest:90}]},
+{name:"Лёгкая тренировка",exercises:[]}]};
+let state=load(),tab="home",editingProgram=null,editingDay=0,activeWorkout=null,restTimer=null,restRemaining=0;
+function load(){try{let x=JSON.parse(localStorage.getItem(KEY));if(x)return x}catch(e){}return{programs:[starter],history:[]}}
+function save(){localStorage.setItem(KEY,JSON.stringify(state))}
+function p(){return state.programs.find(x=>x.active)||state.programs[0]}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
+function fmt(n){return new Intl.NumberFormat("ru-RU").format(Math.round(n||0))}
+function toast(t){let e=$("#toast");e.textContent=t;e.classList.remove("hidden");clearTimeout(window.tt);window.tt=setTimeout(()=>e.classList.add("hidden"),2200)}
+function render(){let titles={home:"Главная",workouts:"Тренировки",food:"Питание",progress:"Прогресс"};$("#pageTitle").textContent=titles[tab]||"Тренировка";$$(".nav-item").forEach(x=>x.classList.toggle("active",x.dataset.tab===tab));({home:home,workouts:workouts,food:food,progress:progress}[tab])()}
+function home(){let q=p(),d=q.days.find(x=>x.exercises.length);$("#app").innerHTML=`<section class="hero"><span class="tag">ТВОЙ ПЛАН</span><h2>${esc(q.name)}</h2><p>${q.daysPerWeek} тренировки в неделю · ${q.weeks} недель</p><button class="primary-btn" id="start">${d?"Начать тренировку":"Добавить упражнения"}</button></section><section class="section"><div class="section-head"><h2>Ближайшая тренировка</h2><span>${d?esc(d.name):"Пусто"}</span></div><div class="card">${d?d.exercises.map((e,i)=>`<div class="exercise-row"><div class="exercise-icon">${["◈","△","◇","○"][i%4]}</div><div class="grow"><b>${esc(e.name)}</b><small>${e.sets} × ${e.reps} · ${e.weight||0} кг</small></div></div>`).join(""):`<div class="empty">Добавь упражнения в конструкторе.</div>`}</div></section><section class="section"><div class="grid2"><div class="card stat"><span class="muted">Тренировок</span><strong>${state.history.length}</strong></div><div class="card stat"><span class="muted">Объём</span><strong>${fmt(state.history.reduce((a,w)=>a+w.volume,0))} кг</strong></div></div></section>`;$("#start").onclick=()=>d?startWorkout(q.days.indexOf(d)):editProgram()}
+function workouts(){let q=p();$("#app").innerHTML=`<section class="section" style="margin-top:0"><div class="row"><div><h2>${esc(q.name)}</h2><div class="muted">${q.daysPerWeek} тренировок / неделю</div></div><button class="ghost-btn" id="newProgram">+ Программа</button></div></section><section class="section"><div class="stack">${q.days.map((d,i)=>`<div class="card"><div class="row"><div><b>День ${i+1} · ${esc(d.name)}</b><div class="muted">${d.exercises.length} упражнений</div></div><div><button class="small-btn editDay" data-i="${i}">Изменить</button> <button class="primary-btn startDay" data-i="${i}" style="width:auto;margin:0;padding:9px 11px">Старт</button></div></div>${d.exercises.slice(0,4).map(e=>`<div class="exercise-row"><div class="exercise-icon">◈</div><div class="grow"><b>${esc(e.name)}</b><small>${e.sets} × ${e.reps}${e.weight?` · ${e.weight} кг`:""}</small></div></div>`).join("")}</div>`).join("")}</div></section><section class="section"><button class="primary-btn" id="editProgram">Настройки программы</button></section>`;$$(".startDay").forEach(b=>b.onclick=()=>startWorkout(+b.dataset.i));$$(".editDay").forEach(b=>b.onclick=()=>editDay(+b.dataset.i));$("#editProgram").onclick=editProgram;$("#newProgram").onclick=newProgram}
+function food(){$("#app").innerHTML=`<section class="hero"><span class="tag">СЛЕДУЮЩИЙ МОДУЛЬ</span><h2>Питание</h2><p>Калории, БЖУ и дневник еды добавим после завершения основных тренировочных функций.</p></section>`}
+function progress(){let vol=state.history.reduce((a,w)=>a+w.volume,0);$("#app").innerHTML=`<div class="grid2"><div class="card stat"><span class="muted">Тренировок</span><strong>${state.history.length}</strong></div><div class="card stat"><span class="muted">Объём</span><strong>${fmt(vol)} кг</strong></div></div><section class="section"><div class="section-head"><h2>История</h2></div><div class="stack">${state.history.length?state.history.map(w=>`<div class="card history-item"><div><b>${esc(w.name)}</b><div class="muted">${w.date} · ${w.completedSets} подходов</div></div><b class="blue">${fmt(w.volume)} кг</b></div>`).join(""):`<div class="card empty">История появится после тренировки.</div>`}</div></section>`}
+function startWorkout(i=0){let q=p(),d=q.days[i]||q.days.find(x=>x.exercises.length);if(!d?.exercises.length){toast("В этом дне нет упражнений");return}activeWorkout={dayName:d.name,dayIndex:q.days.indexOf(d),exercises:d.exercises.map(e=>({...e,done:Array(+e.sets||1).fill(false)})),current:0};showWorkout()}
+function showWorkout(){let e=activeWorkout?.exercises[activeWorkout.current];if(!e){finishWorkout();return}let done=e.done.filter(Boolean).length,total=activeWorkout.exercises.reduce((a,x)=>a+x.done.length,0),all=activeWorkout.exercises.reduce((a,x)=>a+x.done.filter(Boolean).length,0);$("#pageTitle").textContent="Активная тренировка";$$(".nav-item").forEach(x=>x.classList.remove("active"));$("#app").innerHTML=`<section class="hero"><div class="row"><span class="muted">${esc(activeWorkout.dayName)}</span><span class="blue">${activeWorkout.current+1}/${activeWorkout.exercises.length}</span></div><div class="progress" style="margin-top:13px"><i style="width:${Math.round(all/total*100)}%"></i></div><h2 style="margin-top:15px">${esc(e.name)}</h2><p style="margin-top:6px">Цель: ${e.reps} повторений · ${e.weight||0} кг</p></section><section class="section"><div class="section-head"><h2>Подходы</h2><span>${done}/${e.sets}</span></div><div class="sets">${e.done.map((d,i)=>`<button class="set-btn ${d?"done":""}" data-set="${i}"><span class="num">${i+1}</span><span><b>${e.weight||0} кг</b><br><small class="muted">вес</small></span><span><b>${e.reps}</b><br><small class="muted">повт.</small></span><span class="check">${d?"✓":"○"}</span></button>`).join("")}</div><div class="workout-actions"><button class="ghost-btn" id="editCurrent">Изменить</button><button class="primary-btn" id="next" style="margin:0">${done===e.sets?"Следующее":"Пропустить"}</button></div></section><section class="section"><div class="card"><div class="row"><div><b>Отдых</b><div class="muted">Таймер запускается после подхода</div></div><b id="timer">${time(restRemaining)}</b></div><div class="workout-actions"><button class="ghost-btn" id="timerBtn">${restTimer?"Пауза":"Старт 90 сек"}</button><button class="ghost-btn" id="resetTimer">Сброс</button></div></div></section><section class="section"><button class="danger-btn" id="finish" style="width:100%">Завершить тренировку</button></section>`;$$(".set-btn").forEach(b=>b.onclick=()=>toggleSet(+b.dataset.set));$("#next").onclick=()=>{activeWorkout.current++;showWorkout()};$("#editCurrent").onclick=editCurrent;$("#finish").onclick=finishWorkout;$("#timerBtn").onclick=toggleTimer;$("#resetTimer").onclick=()=>{stopTimer();restRemaining=0;showWorkout()}}
+function toggleSet(i){let e=activeWorkout.exercises[activeWorkout.current];e.done[i]=!e.done[i];if(e.done[i]){restRemaining=+e.rest||90;startTimer()}else showWorkout()}
+function time(s){return `${String(Math.floor(s/60)).padStart(2,"0")}:${String(s%60).padStart(2,"0")}`}
+function startTimer(){clearInterval(restTimer);restTimer=setInterval(()=>{restRemaining--;let t=$("#timer");if(t)t.textContent=time(Math.max(0,restRemaining));if(restRemaining<=0){stopTimer();toast("Отдых закончен")}},1000);showWorkout()}
+function stopTimer(){clearInterval(restTimer);restTimer=null}
+function toggleTimer(){if(restTimer){stopTimer();showWorkout()}else{if(!restRemaining)restRemaining=90;startTimer()}}
+function finishWorkout(){if(!activeWorkout)return;stopTimer();let records=[];activeWorkout.exercises.forEach(e=>e.done.forEach((d,i)=>d&&records.push({exercise:e.name,weight:+e.weight||0,reps:+e.reps||0,set:i+1})));state.history.unshift({id:Date.now(),name:activeWorkout.dayName,date:new Date().toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}),completedSets:records.length,volume:records.reduce((a,r)=>a+r.weight*r.reps,0),records});save();activeWorkout=null;restRemaining=0;tab="progress";render();toast("Тренировка сохранена")}
+function editCurrent(){let e=activeWorkout.exercises[activeWorkout.current];openModal(`<h2>${esc(e.name)}</h2><div class="form"><label>Вес, кг<input id="w" type="number" min="0" step=".5" value="${e.weight||0}"></label><label>Повторения<input id="r" type="number" min="1" value="${e.reps}"></label><label>Отдых, сек<input id="rest" type="number" min="0" value="${e.rest||90}"></label><button class="primary-btn" id="saveE">Сохранить</button></div>`);$("#saveE").onclick=()=>{e.weight=+$("#w").value;e.reps=+$("#r").value;e.rest=+$("#rest").value;closeModal();showWorkout()}}
+function editProgram(){let q=p();openModal(`<h2>Настройки программы</h2><div class="form"><label>Название<input id="pn" value="${esc(q.name)}"></label><label>Тренировок в неделю<input id="pd" type="number" min="1" max="7" value="${q.daysPerWeek}"></label><label>Длительность, недель<input id="pw" type="number" min="1" max="52" value="${q.weeks}"></label><button class="primary-btn" id="sp">Сохранить</button></div>`);$("#sp").onclick=()=>{q.name=$("#pn").value.trim()||"Моя программа";q.daysPerWeek=Math.max(1,+$("#pd").value||4);q.weeks=Math.max(1,+$("#pw").value||8);while(q.days.length<q.daysPerWeek)q.days.push({name:`День ${q.days.length+1}`,exercises:[]});q.days=q.days.slice(0,q.daysPerWeek);save();closeModal();render()}}
+function editDay(i){editingDay=i;let q=p(),d=q.days[i];openDayEditor(d)}
+function openDayEditor(d){editingProgram=p();let ex=d.exercises;openModal(`<h2>День тренировки</h2><div class="form"><label>Название дня<input id="dn" value="${esc(d.name)}"></label><div class="day-editor"><div class="row"><b>Упражнения</b><button class="small-btn" id="addEx">+ Добавить</button></div><div id="dayList" style="margin-top:8px">${ex.map((e,i)=>exerciseEditor(e,i)).join("")||`<div class="empty">Пока нет упражнений</div>`}</div></div><button class="primary-btn" id="saveDay">Сохранить день</button></div>`);$("#addEx").onclick=()=>openPicker();$("#saveDay").onclick=saveDay}
+function exerciseEditor(e,i){return `<div class="day-ex" data-ex="${i}"><div class="grow"><b>${esc(e.name)}</b><div class="field-row"><input class="es" type="number" min="1" value="${e.sets}" title="Подходы"><input class="er" type="number" min="1" value="${e.reps}" title="Повторы"><input class="ew" type="number" min="0" step=".5" value="${e.weight||0}" title="Вес"></div></div><button class="icon-action removeEx" data-i="${i}">×</button></div>`}
+function saveDay(){let q=editingProgram,d=q.days[editingDay];d.name=$("#dn").value.trim()||`День ${editingDay+1}`;$$(".day-ex").forEach((row,i)=>{if(!d.exercises[i])return;d.exercises[i].sets=Math.max(1,+row.querySelector(".es").value||1);d.exercises[i].reps=Math.max(1,+row.querySelector(".er").value||1);d.exercises[i].weight=Math.max(0,+row.querySelector(".ew").value||0)});save();closeModal();render()}
+function openPicker(){let d=editingProgram.days[editingDay];openModal(`<h2>Добавить упражнение</h2><input class="form search" id="searchEx" placeholder="Поиск упражнения..."><div id="picker">${catalog.map((e,i)=>pickerItem(e,i)).join("")}</div>`);bindPicker();$("#searchEx").oninput=bindPicker}
+function pickerItem(e,i){return `<div class="picker-item" data-name="${esc(e[0].toLowerCase())}"><div><b>${esc(e[0])}</b><div class="muted">${esc(e[1])} · ${esc(e[2])}</div></div><button class="small-btn addPick" data-i="${i}">Добавить</button></div>`}
+function bindPicker(){let q=($("#searchEx")?.value||"").toLowerCase();$$(".picker-item").forEach(x=>x.style.display=x.dataset.name.includes(q)?"flex":"none");$$(".addPick").forEach(b=>b.onclick=()=>{let e=catalog[+b.dataset.i];editingProgram.days[editingDay].exercises.push({name:e[0],sets:3,reps:10,weight:0,rest:90});openDayEditor(editingProgram.days[editingDay])})}
+function newProgram(){let id="p"+Date.now(),q={id,name:"Новая программа",daysPerWeek:3,weeks:8,active:false,days:[{name:"День 1",exercises:[]},{name:"День 2",exercises:[]},{name:"День 3",exercises:[]}]};state.programs.forEach(x=>x.active=false);q.active=true;state.programs.push(q);save();editProgram()}
+function openModal(c){$("#sheet").innerHTML=c;$("#modal").classList.remove("hidden")}
+function closeModal(){$("#modal").classList.add("hidden");$("#sheet").innerHTML=""}
+$("#modal").onclick=e=>{if(e.target.dataset.closeModal!==undefined)closeModal()};
+$("#quickAdd").onclick=()=>openModal(`<h2>Быстро добавить</h2><div class="sheet-grid"><button class="sheet-action" id="qa"><b>Тренировка</b><span>Начать текущую программу</span></button><button class="sheet-action" onclick="toast('Питание добавим следующим этапом')"><b>Еда</b><span>Дневник питания</span></button></div>`); 
+$("#modal").addEventListener("click",e=>{if(e.target.id==="qa"){closeModal();tab="workouts";render();setTimeout(()=>startWorkout(),40)}});
+$$(".nav-item").forEach(b=>b.onclick=()=>{tab=b.dataset.tab;render()});
+$("#headerAction").onclick=()=>toast("Профиль добавим позже");
+render();

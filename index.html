@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
@@ -6,116 +6,26 @@
 <meta name="theme-color" content="#081220">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>JuDa — Фитнес</title>
+<title>JuDa</title>
 <link rel="stylesheet" href="style.css">
 </head>
 <body>
 <div class="app-shell">
 <header class="topbar">
-  <div class="brand"><div class="brand-mark">J</div><span>JuDa</span></div>
-  <div class="top-actions"><button class="icon-btn" id="notifyBtn">♧</button><button class="avatar">Д</button></div>
+  <div><div class="eyebrow">JUDA</div><h1 id="pageTitle">Главная</h1></div>
+  <button class="icon-btn" id="headerAction">◉</button>
 </header>
-
-<main class="content">
-<section id="homeScreen" class="screen active">
-  <section class="welcome"><p class="eyebrow">СЕГОДНЯ, 17 СЕНТЯБРЯ</p><h1>Привет, Даниил!</h1><p class="subtitle">Сегодня отличный день, чтобы стать лучше 💪</p></section>
-  <section class="hero-workout">
-    <div class="hero-image"><div class="hero-glow"></div><div class="hero-figure">🏋️</div></div>
-    <div class="hero-info"><span class="status-pill">● ТРЕНИРОВКА НА СЕГОДНЯ</span><h2 id="homeWorkoutName">Верх тела</h2>
-      <div class="meta-row"><span id="homeWorkoutMeta">◷ 52 мин</span><span>•</span><span id="homeWorkoutExercises">4 упражнения</span></div>
-      <button class="primary-btn" data-open-workout>Начать тренировку <span>→</span></button>
-    </div>
-  </section>
-  <section class="section-block"><div class="section-title"><h2>Прогресс недели</h2><span>3 / 4</span></div>
-    <div class="week-card"><div class="week-days">
-      <div class="day done"><b>Пн</b><i>✓</i></div><div class="day done"><b>Вт</b><i>✓</i></div><div class="day done"><b>Ср</b><i>✓</i></div>
-      <div class="day current"><b>Чт</b><i>•</i></div><div class="day"><b>Пт</b><i></i></div><div class="day"><b>Сб</b><i></i></div><div class="day"><b>Вс</b><i></i></div>
-    </div><div class="progress-track"><span style="width:75%"></span></div></div>
-  </section>
-  <section class="stats-grid">
-    <article class="stat-card"><span class="stat-icon">🔥</span><span class="stat-label">Калории</span><strong>1 240</strong><small>из 2 400 ккал</small><div class="mini-track"><span style="width:52%"></span></div></article>
-    <article class="stat-card"><span class="stat-icon">💧</span><span class="stat-label">Вода</span><strong>1.4 л</strong><small>из 2.5 л</small><div class="mini-track"><span style="width:56%"></span></div></article>
-    <article class="stat-card macro"><span class="stat-label">Белки</span><strong>85 <small>/ 170 г</small></strong><div class="mini-track"><span style="width:50%"></span></div></article>
-    <article class="stat-card macro"><span class="stat-label">Жиры</span><strong>42 <small>/ 75 г</small></strong><div class="mini-track"><span style="width:56%"></span></div></article>
-    <article class="stat-card macro"><span class="stat-label">Углеводы</span><strong>120 <small>/ 300 г</small></strong><div class="mini-track"><span style="width:40%"></span></div></article>
-  </section>
-  <section class="weight-card"><div><span class="stat-label">Текущий вес</span><strong>78.5 кг</strong></div>
-    <div class="sparkline"><svg viewBox="0 0 160 55" preserveAspectRatio="none"><polyline points="2,39 28,34 52,41 77,27 103,31 128,17 158,8"/></svg><b>−0.6 кг</b><small>за неделю</small></div>
-  </section>
-</section>
-
-<section id="workoutsScreen" class="screen">
-  <div class="page-heading"><div><p class="eyebrow">ТРЕНИРОВКИ</p><h1>Мои тренировки</h1></div><button class="square-btn" id="createProgramBtn">＋</button></div>
-  <div class="segmented"><button class="selected" data-program-tab="mine">Мои программы</button><button data-program-tab="ready">Готовые</button></div>
-  <div id="minePrograms">
-    <article class="program-feature"><div class="program-cover">💪</div><div class="program-content"><span class="status-pill">АКТИВНАЯ ПРОГРАММА</span><h2 id="activeProgramName">Силовая база</h2><p id="activeProgramMeta">4 дня в неделю · 8 недель</p><div class="program-progress"><span style="width:75%"></span></div><small>3 из 4 тренировок на этой неделе</small></div></article>
-    <div class="section-title list-title"><h2>Мои программы</h2><button class="text-btn" id="createProgramBtn2">Создать</button></div>
-    <div class="program-list" id="programList"></div>
-  </div>
-  <div id="readyPrograms" class="hidden">
-    <div class="section-title list-title"><h2>Готовые программы</h2></div>
-    <div class="ready-grid"><button data-template="Набор массы"><span>💪</span><b>Набор массы</b><small>4 дня</small></button><button data-template="Снижение веса"><span>🔥</span><b>Снижение веса</b><small>3 дня</small></button><button data-template="Сила"><span>⚡</span><b>Сила</b><small>4 дня</small></button><button data-template="Домашняя"><span>🏠</span><b>Домашняя</b><small>3 дня</small></button></div>
-  </div>
-</section>
-
-<section id="editorScreen" class="screen">
-  <div class="workout-top"><button class="back-btn" data-back-workouts>‹</button><div><span class="eyebrow">КОНСТРУКТОР</span><h1>Новая программа</h1></div><button class="square-btn" id="saveProgramBtn">✓</button></div>
-  <div class="form-card">
-    <label>Название программы<input id="programName" placeholder="Например, Силовая база"></label>
-    <label>Дней в неделю<select id="programDays"><option value="2">2 дня</option><option value="3">3 дня</option><option value="4" selected>4 дня</option><option value="5">5 дней</option></select></label>
-  </div>
-  <div class="section-title list-title"><h2>Тренировки программы</h2><button class="text-btn" id="addWorkoutDayBtn">+ День</button></div>
-  <div id="editorDays"></div>
-</section>
-
-<section id="dayEditorScreen" class="screen">
-  <div class="workout-top"><button class="back-btn" data-back-editor>‹</button><div><span class="eyebrow">ТРЕНИРОВКА</span><h1 id="dayTitle">День 1</h1></div><button class="square-btn" id="saveDayBtn">✓</button></div>
-  <div class="form-card"><label>Название тренировки<input id="dayName" placeholder="Например, Верх тела"></label></div>
-  <div class="section-title list-title"><h2>Упражнения</h2><button class="text-btn" id="addExerciseBtn">+ Добавить</button></div>
-  <div id="dayExercises"></div>
-</section>
-
-<section id="exercisePickerScreen" class="screen">
-  <div class="workout-top"><button class="back-btn" data-back-day>‹</button><div><span class="eyebrow">БИБЛИОТЕКА</span><h1>Добавить упражнение</h1></div><span></span></div>
-  <div class="search-box">⌕ <input id="pickerSearch" placeholder="Поиск упражнений..."></div>
-  <div class="chips"><button class="chip active">Все</button><button class="chip">Грудь</button><button class="chip">Спина</button><button class="chip">Ноги</button><button class="chip">Плечи</button></div>
-  <div class="exercise-list" id="pickerList"></div>
-</section>
-
-<section id="exercisesScreen" class="screen">
-  <div class="page-heading"><div><p class="eyebrow">БИБЛИОТЕКА</p><h1>Упражнения</h1></div></div>
-  <div class="search-box">⌕ <input id="exerciseSearch" placeholder="Поиск упражнений..."></div>
-  <div class="exercise-list" id="exerciseList"></div>
-</section>
-
-<section id="activeWorkoutScreen" class="screen">
-  <div class="workout-top"><button class="back-btn" data-back-workouts>‹</button><div><span class="eyebrow">ТРЕНИРОВКА</span><h1 id="activeWorkoutTitle">Верх тела</h1></div><button class="square-btn">⋮</button></div>
-  <div class="workout-summary"><strong id="exerciseCounter">1 / 4</strong><span id="activeExerciseName">Жим штанги лёжа</span><div class="progress-track"><span id="workoutProgress" style="width:25%"></span></div></div>
-  <div class="exercise-hero"><div class="exercise-large">🏋️</div><span class="tag">ГРУДЬ</span><h2 id="activeExerciseHeading">Жим штанги лёжа</h2><p>Контролируй движение и не спеши. Записывай результат каждого подхода.</p></div>
-  <div class="set-header"><span>Подходы</span><span>Вес × Повторы</span></div>
-  <div class="sets" id="activeSets"></div>
-  <div class="rest-card"><div><small>ОТДЫХ</small><strong id="timer">01:30</strong></div><button id="timerBtn">▶</button></div>
-  <button class="primary-btn large" id="finishSetBtn">Завершить подход <span>→</span></button>
-  <div class="workout-actions"><button>⚖️<small>Изменить вес</small></button><button>↻<small>Повторы</small></button><button>＋<small>Добавить подход</small></button><button>⇄<small>Заменить</small></button></div>
-</section>
-
-<section id="foodScreen" class="screen"><div class="page-heading"><div><p class="eyebrow">ПИТАНИЕ</p><h1>Дневник питания</h1></div></div><div class="empty-card"><span>🍎</span><h2>Питание — следующий этап</h2><p>Калории, БЖУ, продукты и дневник питания подключим после конструктора тренировок.</p></div></section>
-<section id="progressScreen" class="screen"><div class="page-heading"><div><p class="eyebrow">СТАТИСТИКА</p><h1>Прогресс</h1></div></div><div class="empty-card"><span>📈</span><h2>Прогресс — следующий этап</h2><p>Вес, замеры, фото, личные рекорды и графики будут здесь.</p></div></section>
-</main>
-
+<main id="app"></main>
 <nav class="bottom-nav">
-<button class="nav-item active" data-screen="homeScreen"><span>⌂</span><small>Главная</small></button>
-<button class="nav-item" data-screen="workoutsScreen"><span>◒</span><small>Тренировки</small></button>
-<button class="add-btn" id="addBtn">+</button>
-<button class="nav-item" data-screen="foodScreen"><span>◉</span><small>Питание</small></button>
-<button class="nav-item" data-screen="progressScreen"><span>⌁</span><small>Прогресс</small></button>
+<button class="nav-item active" data-tab="home"><span>⌂</span><small>Главная</small></button>
+<button class="nav-item" data-tab="workouts"><span>▣</span><small>Тренировки</small></button>
+<button class="fab" id="quickAdd">+</button>
+<button class="nav-item" data-tab="food"><span>◌</span><small>Питание</small></button>
+<button class="nav-item" data-tab="progress"><span>↗</span><small>Прогресс</small></button>
 </nav>
 </div>
-
-<div class="quick-add" id="quickAdd"><div class="quick-panel"><div class="panel-head"><h2>Добавить</h2><button class="close-btn" id="closeAdd">×</button></div><div class="quick-grid">
-<button data-quick="workout">🏋️<span>Тренировка</span></button><button data-quick="food">🍎<span>Еда</span></button><button data-quick="weight">⚖️<span>Вес</span></button><button data-quick="water">💧<span>Вода</span></button><button data-quick="measure">📏<span>Замер</span></button><button data-quick="photo">📷<span>Фото</span></button>
-</div></div></div>
-<div class="toast" id="toast"></div>
+<div class="modal hidden" id="modal"><div class="modal-backdrop" data-close-modal></div><div class="sheet" id="sheet"></div></div>
+<div class="toast hidden" id="toast"></div>
 <script src="script.js"></script>
 </body>
 </html>
