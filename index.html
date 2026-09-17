@@ -1,31 +1,50 @@
 <!doctype html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#081220">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<title>JuDa</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <meta name="theme-color" content="#081220">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="JuDa">
+  <title>JuDa</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="app-shell">
-<header class="topbar">
-  <div><div class="eyebrow">JUDA</div><h1 id="pageTitle">Главная</h1></div>
-  <button class="icon-btn" id="headerAction">◉</button>
-</header>
-<main id="app"></main>
-<nav class="bottom-nav">
-<button class="nav-item active" data-tab="home"><span>⌂</span><small>Главная</small></button>
-<button class="nav-item" data-tab="workouts"><span>▣</span><small>Тренировки</small></button>
-<button class="fab" id="quickAdd">+</button>
-<button class="nav-item" data-tab="food"><span>◌</span><small>Питание</small></button>
-<button class="nav-item" data-tab="progress"><span>↗</span><small>Прогресс</small></button>
-</nav>
-</div>
-<div class="modal hidden" id="modal"><div class="modal-backdrop" data-close-modal></div><div class="sheet" id="sheet"></div></div>
-<div class="toast hidden" id="toast"></div>
-<script src="script.js"></script>
+  <div class="app-shell">
+    <header class="topbar">
+      <div>
+        <div class="eyebrow">JUDA</div>
+        <h1 id="pageTitle">Главная</h1>
+      </div>
+      <button class="icon-btn" id="headerAction" aria-label="Профиль">◉</button>
+    </header>
+
+    <main id="app"></main>
+
+    <nav class="bottom-nav" aria-label="Основная навигация">
+      <button class="nav-item active" data-tab="home">
+        <span>⌂</span><small>Главная</small>
+      </button>
+      <button class="nav-item" data-tab="workouts">
+        <span>▣</span><small>Тренировки</small>
+      </button>
+      <button class="fab" id="quickAdd" aria-label="Быстро добавить">+</button>
+      <button class="nav-item" data-tab="food">
+        <span>◌</span><small>Питание</small>
+      </button>
+      <button class="nav-item" data-tab="progress">
+        <span>↗</span><small>Прогресс</small>
+      </button>
+    </nav>
+  </div>
+
+  <div class="modal hidden" id="modal">
+    <div class="modal-backdrop" data-close></div>
+    <div class="sheet" id="sheet"></div>
+  </div>
+  <div class="toast hidden" id="toast"></div>
+
+  <script src="script.js"></script>
 </body>
 </html>
