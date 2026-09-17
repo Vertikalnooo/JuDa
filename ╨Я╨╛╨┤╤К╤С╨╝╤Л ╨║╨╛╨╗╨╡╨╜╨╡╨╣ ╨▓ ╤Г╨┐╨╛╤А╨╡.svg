@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 560">
+<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#12263e"/><stop offset="1" stop-color="#081220"/></linearGradient></defs>
+<rect width="800" height="560" rx="34" fill="url(#g)"/>
+<circle cx="650" cy="95" r="52" fill="#2dd4bf" opacity=".13"/><circle cx="650" cy="95" r="31" fill="none" stroke="#2dd4bf" stroke-width="2" opacity=".5"/>
+<text x="44" y="58" fill="#8fa0b5" font-family="Arial,sans-serif" font-size="22" font-weight="700">JUDA · ТЕХНИКА</text>
+<text x="44" y="100" fill="#f5f9ff" font-family="Arial,sans-serif" font-size="27" font-weight="800">Подъёмы коленей в упоре</text>
+<!-- person -->
+<circle cx="390" cy="170" r="37" fill="none" stroke="#e6eef8" stroke-width="12"/>
+<path d="M390 210 L390 325 M390 235 L310 275 M390 235 L470 275 M390 325 L325 435 M390 325 L455 435" fill="none" stroke="#e6eef8" stroke-width="16" stroke-linecap="round" stroke-linejoin="round"/>
+<circle cx="390" cy="250" r="43" fill="#2dd4bf" opacity=".18"/><circle cx="390" cy="250" r="27" fill="#2dd4bf" opacity=".32"/>
+<!-- equipment / movement -->
+<path d="M275 275 L505 275" stroke="#9fb0c4" stroke-width="10" stroke-linecap="round" opacity=".9"/>
+<path d="M275 250 L275 300 M505 250 L505 300" stroke="#9fb0c4" stroke-width="8"/>
+<path d="M560 360 C625 320 650 265 620 220" fill="none" stroke="#2dd4bf" stroke-width="9" stroke-linecap="round"/>
+<path d="M615 217 l-4 25 22-10" fill="none" stroke="#2dd4bf" stroke-width="7" stroke-linecap="round" stroke-linejoin="round"/>
+<rect x="44" y="466" width="180" height="38" rx="19" fill="#0d1a2a" stroke="#22334a"/><text x="134" y="491" text-anchor="middle" fill="#b9c7d8" font-family="Arial,sans-serif" font-size="16" font-weight="700">Пресс</text>
+<rect x="238" y="466" width="180" height="38" rx="19" fill="#0d1a2a" stroke="#22334a"/><text x="328" y="491" text-anchor="middle" fill="#b9c7d8" font-family="Arial,sans-serif" font-size="16" font-weight="700">Турник</text>
+<rect x="432" y="466" width="145" height="38" rx="19" fill="#0d1a2a" stroke="#22334a"/><text x="504" y="491" text-anchor="middle" fill="#b9c7d8" font-family="Arial,sans-serif" font-size="16" font-weight="700">Изолирующее</text>
+<text x="44" y="540" fill="#6f8299" font-family="Arial,sans-serif" font-size="15">Схема движения · работай плавно и без рывков</text>
+</svg>

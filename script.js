@@ -6,14 +6,35 @@ const foods=[
 ["Творог 5%",121,17,5,1.8,150],["Банан",89,1.1,.3,23,120],
 ["Лосось",208,20,13,0,150],["Авокадо",160,2,15,9,80]
 ];
-const exercises=[
-["Жим штанги лёжа","Грудь","Базовое"],["Приседания со штангой","Ноги","Базовое"],
-["Тяга верхнего блока","Спина","Базовое"],["Разводка гантелей лёжа","Грудь","Изолирующее"],
-["Подтягивания","Спина","Базовое"],["Жим гантелей сидя","Плечи","Базовое"],
-["Выпады с гантелями","Ноги","Базовое"],["Разгибание рук на блоке","Руки","Изолирующее"],
-["Сгибание рук с гантелями","Руки","Изолирующее"],["Тяга штанги в наклоне","Спина","Базовое"],
-["Румынская тяга","Ноги","Базовое"],["Подъём на носки","Ноги","Изолирующее"]
-];
+const exercises=[["Жим штанги лёжа","Грудь","Базовое","Штанга","Основное упражнение для груди. Держи лопатки сведёнными, стопы устойчиво на полу и опускай штангу под контролем.",["Ляг на скамью и сведи лопатки.","Возьми штангу чуть шире плеч.","Опусти её к нижней части груди, сохраняя контроль.","Выжми вверх без резкого разгибания локтей."]],["Жим гантелей на наклонной скамье","Грудь","Базовое","Гантели","Акцент на верхнюю часть груди. Не своди гантели ударом и не прогибай поясницу чрезмерно.",["Установи наклон 20–35°.","Опусти гантели к верхней части груди.","Выжми их вверх по естественной дуге.","Сохрани плечи опущенными."]],["Разводка гантелей лёжа","Грудь","Изолирующее","Гантели","Изолирующее движение для груди с мягким сгибом локтей и контролируемой амплитудой.",["Ляг на скамью, гантели над грудью.","Слегка согни локти.","Разведи руки в стороны до комфортной амплитуды.","Сведи гантели обратно без удара."]],["Кроссовер на блоках","Грудь","Изолирующее","Блоки","Плавное сведение рук перед корпусом для постоянного напряжения грудных мышц.",["Встань между блоками и сделай небольшой шаг вперёд.","Возьми рукояти и слегка согни локти.","Сведи руки перед корпусом.","Медленно вернись в исходное положение."]],["Отжимания от пола","Грудь","Базовое","Собственный вес","Универсальное упражнение для груди и трицепса. Корпус держи одной линией.",["Поставь ладони чуть шире плеч.","Напряги пресс и ягодицы.","Опусти грудь к полу.","Оттолкнись и вернись вверх."]],["Жим в тренажёре","Грудь","Базовое","Тренажёр","Стабильный вариант жима с заданной траекторией. Не позволяй плечам уходить вперёд.",["Настрой сиденье под уровень середины груди.","Сведи лопатки и возьми рукояти.","Выжми рукояти вперёд.","Плавно верни их назад."]],["Пуловер с гантелью","Грудь","Изолирующее","Гантель","Движение с акцентом на грудь и переднюю зубчатую мышцу. Используй умеренный вес.",["Ляг поперёк скамьи или вдоль неё.","Держи одну гантель над грудью.","Уведи её за голову с мягким сгибом локтей.","Верни гантель над грудь."]],["Жим гантелей лёжа","Грудь","Базовое","Гантели","Более свободный вариант жима, позволяющий подобрать естественную траекторию рук.",["Ляг на скамью и подними гантели.","Опусти их к бокам груди.","Выжми вверх, сохраняя контроль.","Не сталкивай гантели в верхней точке."]],["Тяга верхнего блока","Спина","Базовое","Блок","Базовая вертикальная тяга для широчайших. Не раскачивай корпус.",["Сядь и зафиксируй бёдра.","Потяни рукоять к верхней части груди.","Веди локти вниз и назад.","Плавно выпрями руки."]],["Подтягивания","Спина","Базовое","Собственный вес","Вертикальная тяга с собственным весом. Начинай движение спиной, а не рывком.",["Возьмись за перекладину.","Опусти плечи и напряги корпус.","Подтяни грудь к перекладине.","Контролируемо опустись."]],["Тяга штанги в наклоне","Спина","Базовое","Штанга","Мощное упражнение для всей спины. Сохраняй нейтральную поясницу.",["Наклони корпус с прямой спиной.","Потяни штангу к нижним рёбрам.","Сведи лопатки.","Опусти штангу под контролем."]],["Тяга гантели одной рукой","Спина","Базовое","Гантель","Односторонняя тяга для широчайших и средней части спины.",["Упрись одной рукой в скамью.","Потяни гантель к тазу.","Не разворачивай корпус.","Опусти руку полностью под контролем."]],["Горизонтальная тяга блока","Спина","Базовое","Блок","Позволяет точно контролировать лопатки и среднюю часть спины.",["Сядь устойчиво и выпрями спину.","Потяни рукоять к животу.","Сведи лопатки.","Верни рукоять вперёд без округления спины."]],["Тяга Т-грифа","Спина","Базовое","Т-гриф","Плотная тяга с хорошей нагрузкой на толщину спины.",["Займи устойчивую стойку.","Наклонись с нейтральной спиной.","Потяни рукоять к корпусу.","Медленно опусти."]],["Пулдаун прямыми руками","Спина","Изолирующее","Блок","Изолирующее движение для широчайших без активного сгибания локтей.",["Встань перед верхним блоком.","Возьми прямую рукоять.","Веди её вниз к бёдрам.","Вернись вверх, сохраняя натяжение."]],["Обратные подтягивания","Спина","Базовое","Собственный вес","Подтягивания обратным хватом с большим участием бицепса и широчайших.",["Возьмись обратным хватом.","Напряги корпус.","Подтяни подбородок к перекладине.","Плавно опустись."]],["Приседания со штангой","Ноги","Базовое","Штанга","Базовое упражнение для квадрицепсов и ягодиц. Колени движутся в направлении носков.",["Поставь стопы примерно на ширине плеч.","Сделай вдох и начни присед.","Опустись до комфортной глубины.","Встань, толкая пол стопами."]],["Румынская тяга","Ноги","Базовое","Штанга","Упражнение на заднюю поверхность бедра и ягодицы через движение в тазобедренном суставе.",["Стой ровно со штангой.","Отведи таз назад.","Опускай штангу вдоль ног.","Разогни таз и вернись вверх."]],["Выпады с гантелями","Ноги","Базовое","Гантели","Односторонняя работа на ноги и ягодицы. Шаг должен быть устойчивым.",["Сделай шаг вперёд.","Опусти заднее колено вниз.","Переднее колено держи по линии стопы.","Вернись в исходное положение."]],["Жим ногами","Ноги","Базовое","Тренажёр","Позволяет загрузить ноги при стабильной спине. Не отрывай таз от спинки.",["Поставь стопы на платформу.","Освободи упоры.","Согни ноги под контролем.","Вытолкни платформу без блокировки коленей."]],["Разгибание ног","Ноги","Изолирующее","Тренажёр","Изолирующая работа квадрицепса. Используй плавный темп.",["Настрой валик над голенями.","Прижми спину к спинке.","Разогни ноги.","Медленно опусти валик."]],["Сгибание ног лёжа","Ноги","Изолирующее","Тренажёр","Изолирует заднюю поверхность бедра.",["Ляг на тренажёр животом вниз.","Зафиксируй таз.","Согни ноги к ягодицам.","Плавно опусти валик."]],["Болгарские сплит-приседы","Ноги","Базовое","Гантели","Одностороннее упражнение на квадрицепс и ягодицы с большой амплитудой.",["Поставь заднюю стопу на опору.","Опусти таз вниз.","Держи переднюю стопу устойчиво.","Поднимись через переднюю ногу."]],["Гоблет-присед","Ноги","Базовое","Гантель","Удобный вариант приседа с гантелью перед грудью.",["Держи гантель у груди.","Сядь тазом вниз и назад.","Сохраняй грудь раскрытой.","Встань через стопы."]],["Жим гантелей сидя","Плечи","Базовое","Гантели","Базовый жим над головой для дельтовидных мышц.",["Сядь и зафиксируй спину.","Держи гантели на уровне плеч.","Выжми вверх.","Опусти под контролем."]],["Жим штанги стоя","Плечи","Базовое","Штанга","Вертикальный жим с участием всего корпуса при строгой технике.",["Стой ровно, штанга на уровне ключиц.","Напряги пресс и ягодицы.","Выжми штангу вверх.","Опусти к ключицам."]],["Разведения гантелей в стороны","Плечи","Изолирующее","Гантели","Изолирует среднюю дельту. Не поднимай плечи к ушам.",["Возьми лёгкие гантели.","Слегка согни локти.","Подними руки до уровня плеч.","Медленно опусти."]],["Разведения в наклоне","Плечи","Изолирующее","Гантели","Акцент на заднюю дельту и верх спины.",["Наклони корпус с ровной спиной.","Опусти руки под грудью.","Разведи гантели в стороны.","Вернись вниз."]],["Тяга каната к лицу","Плечи","Изолирующее","Блок","Укрепляет заднюю дельту и мышцы верхней части спины.",["Установи канат на уровне лица.","Потяни его к лицу.","Разведи кисти в стороны.","Плавно отпусти."]],["Подъём гантелей перед собой","Плечи","Изолирующее","Гантели","Передняя дельта работает при подъёме рук перед корпусом.",["Держи гантели перед бёдрами.","Подними одну или обе руки до уровня плеч.","Не раскачивайся.","Опусти под контролем."]],["Жим Арнольда","Плечи","Базовое","Гантели","Жим с поворотом кистей, который сочетает подъём и вращение плеча.",["Начни с гантелей перед лицом.","Разверни ладони наружу.","Выжми вверх.","Вернись по обратной траектории."]],["Тяга гантелей к подбородку","Плечи","Базовое","Гантели","Тяговое движение для дельтовидных. Используй умеренную амплитуду.",["Держи гантели перед бёдрами.","Подними локти вверх и в стороны.","Не тяни плечи к ушам.","Опусти гантели."]],["Сгибание рук с гантелями","Руки","Изолирующее","Гантели","Классическое упражнение на бицепс без раскачки корпуса.",["Прижми локти к корпусу.","Согни руки вверх.","Сократи бицепс вверху.","Медленно опусти."]],["Молотковые сгибания","Руки","Изолирующее","Гантели","Нейтральный хват нагружает бицепс и плечелучевую мышцу.",["Держи ладони друг к другу.","Согни руки без движения плечами.","Подними гантели.","Опусти под контролем."]],["Сгибание рук со штангой","Руки","Базовое","Штанга","Традиционное упражнение на бицепс. Корпус остаётся стабильным.",["Возьми штангу удобным хватом.","Согни локти.","Подними штангу к груди.","Плавно опусти."]],["Разгибание рук на блоке","Руки","Изолирующее","Блок","Изолирует трицепс при разгибании локтя вниз.",["Встань перед верхним блоком.","Прижми локти к корпусу.","Разогни руки вниз.","Верни рукоять вверх под контролем."]],["Французский жим лёжа","Руки","Изолирующее","Штанга","Упражнение на трицепс с контролируемым сгибанием локтей.",["Ляг на скамью.","Держи штангу над грудью.","Согни локти, опуская штангу ко лбу/за голову.","Разогни руки."]],["Разгибание руки с гантелью из-за головы","Руки","Изолирующее","Гантель","Акцент на длинную головку трицепса.",["Подними гантель над головой.","Согни локоть, опуская вес за голову.","Разогни руку вверх.","Не разводи локоть в сторону."]],["Сгибание рук на скамье Скотта","Руки","Изолирующее","Штанга","Скамья фиксирует плечо и снижает читинг.",["Прижми плечи к подушке.","Согни руки вверх.","Не отрывай локти.","Медленно опусти штангу."]],["Отжимания на брусьях","Руки","Базовое","Собственный вес","Сложное упражнение на трицепс и грудь. Для акцента на трицепс корпус держи более вертикально.",["Займи упор на брусьях.","Согни локти и опустись.","Не проваливай плечи.","Вытолкни корпус вверх."]],["Скручивания","Пресс","Изолирующее","Собственный вес","Контролируемое сгибание корпуса с акцентом на прямую мышцу живота.",["Ляг на спину и согни колени.","Подтяни рёбра к тазу.","Не тяни голову руками.","Медленно опустись."]],["Подъёмы ног лёжа","Пресс","Изолирующее","Собственный вес","Упражнение на мышцы живота с контролем таза.",["Ляг на спину.","Прижми поясницу к полу.","Подними прямые ноги.","Медленно опусти их."]],["Подъёмы коленей в упоре","Пресс","Изолирующее","Турник","Работа на пресс через подъём таза и коленей.",["Зафиксируйся в упоре.","Подтяни колени к груди.","Слегка подкрути таз.","Опусти ноги без раскачки."]],["Планка","Пресс","Изолирующее","Собственный вес","Статическое упражнение для всего корпуса.",["Опирайся на предплечья.","Вытяни тело в одну линию.","Напряги пресс и ягодицы.","Дыши спокойно и удерживай позицию."]],["Боковая планка","Пресс","Изолирующее","Собственный вес","Статическая работа косых мышц и стабилизаторов.",["Встань на боковое предплечье.","Подними таз.","Сохраняй прямую линию тела.","Не задерживай дыхание."]],["Скручивания на блоке","Пресс","Изолирующее","Блок","Позволяет дозировать сопротивление для мышц пресса.",["Встань на колени перед блоком.","Возьми канат у головы.","Скрути корпус вниз.","Вернись без рывка."]],["Велосипед","Пресс","Изолирующее","Собственный вес","Динамическая работа прямой и косых мышц живота.",["Ляг на спину и подними ноги.","Подведи локоть к противоположному колену.","Чередуй стороны.","Двигайся плавно, без рывков."]],["Dead bug","Пресс","Изолирующее","Собственный вес","Упражнение на контроль корпуса и положение поясницы.",["Ляг на спину, руки вверх.","Подними ноги под 90°.","Одновременно вытяни противоположные руку и ногу.","Вернись и смени сторону."]],["Ягодичный мост","Ягодицы","Базовое","Собственный вес","Базовое движение для ягодиц с акцентом на разгибание таза.",["Ляг на спину, стопы под коленями.","Подкрути таз и напряги пресс.","Подними таз вверх.","Сожми ягодицы и опусти."]],["Ягодичный мост со штангой","Ягодицы","Базовое","Штанга","Утяжелённый вариант моста для прогрессии ягодиц.",["Положи штангу на таз через мягкую накладку.","Упрись стопами в пол.","Подними таз вверх.","Опусти под контролем."]],["Махи ногой назад в кроссовере","Ягодицы","Изолирующее","Блок","Изолирующее упражнение на ягодицы с контролируемым отведением ноги.",["Закрепи манжету на голени.","Отведи ногу назад.","Не прогибай поясницу.","Верни ногу вперёд."]],["Отведение ноги в тренажёре","Ягодицы","Изолирующее","Тренажёр","Работа на среднюю ягодичную и отводящие мышцы.",["Сядь и прижми спину.","Разведи колени в стороны.","Задержись на секунду.","Вернись медленно."]],["Зашагивания на платформу","Ягодицы","Базовое","Гантели","Одностороннее упражнение на ягодицы и ноги.",["Поставь одну стопу на платформу.","Поднимись через рабочую ногу.","Не отталкивайся сильно задней ногой.","Плавно опустись."]],["Сумо-присед","Ягодицы","Базовое","Гантель","Широкая стойка увеличивает участие ягодиц и приводящих мышц.",["Поставь ноги шире плеч.","Разверни носки наружу.","Опустись вниз с прямой спиной.","Встань, толкая пол стопами."]],["Болгарский сплит-присед с акцентом на ягодицы","Ягодицы","Базовое","Гантели","Вариант сплит-приседа с чуть большим наклоном корпуса.",["Поставь заднюю ногу на опору.","Сделай небольшой наклон корпуса.","Опусти таз вниз.","Поднимись через пятку передней ноги."]],["Гиперэкстензия на ягодицы","Ягодицы","Базовое","Собственный вес","Вариант гиперэкстензии с акцентом на разгибание таза.",["Зафиксируй ноги в тренажёре.","Округлять поясницу не нужно.","Опусти корпус через таз.","Подними корпус за счёт ягодиц."]],["Подъём на носки стоя","Икры","Изолирующее","Тренажёр","Основное упражнение на икроножные мышцы в положении стоя.",["Поставь носки на платформу.","Опусти пятки вниз.","Поднимись на носки как можно выше.","Плавно опусти пятки."]],["Подъём на носки сидя","Икры","Изолирующее","Тренажёр","Сидячий вариант с акцентом на камбаловидную мышцу.",["Сядь и размести валик на бёдрах.","Опусти пятки.","Подними их вверх.","Вернись в нижнюю точку."]],["Подъём на носки в жиме ногами","Икры","Изолирующее","Тренажёр","Позволяет тренировать икры с нагрузкой тренажёра для ног.",["Поставь носки на край платформы.","Слегка согни колени.","Подними пятки.","Опусти их глубоко и контролируемо."]],["Подъём на одной ноге","Икры","Изолирующее","Собственный вес","Односторонняя работа для икроножных с контролем баланса.",["Встань на носок одной ноги.","Опусти пятку.","Поднимись максимально высоко.","Повтори и смени ногу."]],["Подъём на носки в Смите","Икры","Изолирующее","Смит","Устойчивый вариант подъёма на носки со свободной настройкой веса.",["Размести штангу на плечах.","Носки на платформе.","Поднимись на носки.","Плавно опусти пятки."]],["Подъём на носки с гантелями","Икры","Изолирующее","Гантели","Простой вариант для зала и дома.",["Возьми гантели по бокам.","Поставь носки на небольшую опору.","Поднимись на носки.","Опусти пятки под контролем."]],["Пружинящие подъёмы на носки","Икры","Изолирующее","Собственный вес","Высокоповторный вариант для икроножных.",["Встань устойчиво.","Поднимайся на носки короткими контролируемыми движениями.","Не заваливайся наружу.","Сохраняй ритм."]],["Подъём на носки в тренажёре стоя","Икры","Изолирующее","Тренажёр","Стабильный вариант для прогрессивной нагрузки на икры.",["Настрой плечевые упоры.","Поставь носки на платформу.","Подними пятки вверх.","Медленно вернись вниз."]]];
+
+const muscleOrder=["Грудь","Спина","Ноги","Плечи","Руки","Пресс","Ягодицы","Икры"];
+const muscleIcons={"Грудь":"◉","Спина":"◈","Ноги":"⌁","Плечи":"◇","Руки":"◌","Пресс":"▦","Ягодицы":"◆","Икры":"◍"};
+function exerciseMeta(name){return exercises.find(x=>x[0]===name)||null}
+function exerciseImg(name){const m=exerciseMeta(name);return m?`assets/exercises/${encodeURI(m[0])}.svg`:"assets/exercises/default.svg"}
+function exerciseCardHtml(x){return `<button class="exercise-card" data-ex="${esc(x[0])}"><div class="exercise-thumb"><img src="${exerciseImg(x[0])}" alt="${esc(x[0])} — техника выполнения" loading="lazy"></div><div class="exercise-card-body"><div class="row"><b>${esc(x[0])}</b><span class="exercise-arrow">›</span></div><div class="muted">${esc(x[1])} · ${esc(x[2])}</div><div class="meta-chip inline-chip">${esc(x[3])}</div></div></button>`}
+function exerciseDetail(name){
+  const x=exerciseMeta(name);if(!x)return;
+  openModal(`<div class="exercise-detail"><div class="exercise-detail-image"><img src="${exerciseImg(name)}" alt="${esc(name)} — техника выполнения"></div><div class="detail-tag">${esc(x[1])} · ${esc(x[2])} · ${esc(x[3])}</div><h2>${esc(x[0])}</h2><p class="detail-desc">${esc(x[4])}</p><h3>Техника выполнения</h3><ol class="technique-list">${x[5].map((step,i)=>`<li><span>${i+1}</span><div>${esc(step)}</div></li>`).join("")}</ol><div class="detail-note"><b>Главное</b><span>Работай без рывков, контролируй движение и подбирай вес, который позволяет сохранить технику.</span></div><button class="primary-btn" id="detailAdd">Добавить в тренировку</button></div>`);
+  $("#detailAdd").onclick=()=>{closeModal();chooseProgramForExercise(name)};
+}
+function exerciseLibrary(){
+  const q=(window.libraryQuery||"").toLowerCase();
+  const list=exercises.filter(x=>x.join(" ").toLowerCase().includes(q));
+  const groups=muscleOrder.map(m=>[m,list.filter(x=>x[1]===m)]).filter(g=>g[1].length);
+  $("#pageTitle").textContent="Библиотека";
+  $$(".nav-item").forEach(x=>x.classList.remove("active"));
+  $("#app").innerHTML=`<section class="hero compact"><span class="tag">БИБЛИОТЕКА</span><h2>${exercises.length} упражнений</h2><p>Подробная техника, мышечная группа и оборудование.</p><input id="librarySearch" class="search library-search" placeholder="Поиск упражнения или мышцы" value="${esc(window.libraryQuery||"")}"></section><div class="library-groups">${groups.map(([m,items])=>`<section class="section"><div class="section-head"><h2>${muscleIcons[m]||"•"} ${m}</h2><span>${items.length}</span></div><div class="exercise-grid">${items.map(exerciseCardHtml).join("")}</div></section>`).join("")||`<div class="card empty">Ничего не найдено.</div>`}</div>`;
+  $("#librarySearch").oninput=e=>{window.libraryQuery=e.target.value;exerciseLibrary()};
+  $$(".exercise-card").forEach(b=>b.onclick=()=>exerciseDetail(b.dataset.ex));
+}
+function chooseProgramForExercise(name){
+  const q=p();
+  openModal(`<h2>Добавить в тренировку</h2><div class="muted" style="margin:5px 0 14px">${esc(name)}</div><div class="stack">${q.days.map((d,i)=>`<button class="card choose-day" data-i="${i}" style="text-align:left"><b>День ${i+1} · ${esc(d.name)}</b><div class="muted">${d.exercises.length} упражнений</div></button>`).join("")}</div>`);
+  $$(".choose-day").forEach(b=>b.onclick=()=>{q.days[+b.dataset.i].exercises.push({name,sets:3,reps:10,weight:0,rest:90});save();closeModal();tab="workouts";render();toast("Упражнение добавлено");});
+}
+
+
 const starter={id:"p1",name:"Силовая база",daysPerWeek:4,weeks:8,active:true,days:[
 {name:"Верх тела",exercises:[{name:"Жим штанги лёжа",sets:3,reps:8,weight:60,rest:90},{name:"Тяга верхнего блока",sets:3,reps:10,weight:45,rest:90}]},
 {name:"Низ тела",exercises:[{name:"Приседания со штангой",sets:3,reps:8,weight:70,rest:120}]},
@@ -112,7 +133,7 @@ function home(){
       <div class="section-head"><h2>Тренировка</h2><span>${d?esc(d.name):"Нет"}</span></div>
       <div class="card">${d?d.exercises.slice(0,3).map(e=>`
         <div class="food-item">
-          <div class="food-icon">◈</div>
+          <div class="food-icon exercise-mini"><img src="${exerciseImg(e.name)}" alt=""></div>
           <div class="grow"><b>${esc(e.name)}</b><div class="muted">${e.sets} × ${e.reps} · ${e.weight||0} кг</div></div>
         </div>`).join(""):`<div class="empty">Добавь упражнения в программе.</div>`}</div>
     </section>`;
@@ -127,7 +148,7 @@ function workouts(){
     <section class="section" style="margin-top:18px">
       <div class="row">
         <div><h2>${esc(q.name)}</h2><div class="muted" style="margin-top:5px">${q.daysPerWeek} тренировок / неделю</div></div>
-        <button class="ghost-btn" id="editP">Настройки</button>
+        <div class="row-actions"><button class="ghost-btn" id="libraryBtn">Библиотека</button><button class="ghost-btn" id="editP">Настройки</button></div>
       </div>
     </section>
     <section class="section">
@@ -138,13 +159,14 @@ function workouts(){
             <button class="primary-btn startDay" data-i="${i}" style="width:auto;margin:0;padding:9px 12px">Старт</button>
           </div>
           ${d.exercises.map(e=>`
-            <div class="food-item">
-              <div class="food-icon">◈</div>
+            <button class="food-item exercise-list-item" data-ex="${esc(e.name)}">
+              <div class="food-icon exercise-mini"><img src="${exerciseImg(e.name)}" alt=""></div>
               <div class="grow"><b>${esc(e.name)}</b><div class="muted">${e.sets} × ${e.reps}${e.weight?` · ${e.weight} кг`:""}</div></div>
-            </div>`).join("")||`<div class="empty">День пустой</div>`}
+            </button>`).join("")||`<div class="empty">День пустой</div>`}
         </div>`).join("")}</div>
     </section>`;
-  $("#editP").onclick=editProgram;
+  $("#editP").onclick=editProgram;$("#libraryBtn").onclick=()=>exerciseLibrary();
+  $$(".exercise-list-item").forEach(b=>b.onclick=()=>exerciseDetail(b.dataset.ex));
   $$(".startDay").forEach(b=>b.onclick=()=>startWorkout(+b.dataset.i));
 }
 function food(){
@@ -451,7 +473,12 @@ function startWorkout(i=0){
   if(!d?.exercises.length){toast("В этом дне нет упражнений");return}
   activeWorkout={dayName:d.name,exercises:d.exercises.map(e=>{
     const prev=previousPerformance(e.name);
-    const base={...e,done:Array(+e.sets||1).fill(false),previous:prev};
+    const count=Math.max(1,+e.sets||1);
+    const prevRows=(state.history||[]).flatMap(w=>(w.records||[]).filter(r=>r.exercise===e.name)).slice(-count);
+    const base={...e,done:Array(count).fill(false),setsData:Array.from({length:count},(_,i)=>({
+      weight:+(prevRows[i]?.weight ?? ((+e.weight||0)>0?e.weight:(prev?.suggestion||0)))||0,
+      reps:+(prevRows[i]?.reps ?? e.reps)||1
+    })),previous:prev};
     if((+e.weight||0)===0&&prev?.suggestion>0) base.weight=prev.suggestion;
     return base;
   }),current:0};
@@ -461,24 +488,27 @@ function showWorkout(){
   const e=activeWorkout?.exercises[activeWorkout.current];
   if(!e){finishWorkout();return}
   const done=e.done.filter(Boolean).length,total=activeWorkout.exercises.reduce((a,x)=>a+x.done.length,0),all=activeWorkout.exercises.reduce((a,x)=>a+x.done.filter(Boolean).length,0);
-  const prev=e.previous;
   $("#pageTitle").textContent="Активная тренировка";$$(".nav-item").forEach(x=>x.classList.remove("active"));
   $("#app").innerHTML=`
     <section class="hero">
       <div class="row"><span class="muted">${esc(activeWorkout.dayName)}</span><span class="blue">${activeWorkout.current+1}/${activeWorkout.exercises.length}</span></div>
       <div class="progress" style="margin-top:13px"><i style="width:${total?Math.round(all/total*100):0}%"></i></div>
-      <h2 style="margin-top:15px">${esc(e.name)}</h2>
-      <p style="margin-top:6px">Цель: ${e.reps} повторений · ${e.weight||0} кг</p>
-      ${prev?`<div class="previous-box"><div><span class="muted">Прошлый раз</span><b>${fmt(prev.weight)} кг × ${prev.reps}</b></div><div><span class="muted">JuDa предлагает</span><b class="blue">${fmt(prev.suggestion)} кг</b></div></div>`:`<div class="previous-box"><div><span class="muted">Первый подход</span><b>Истории пока нет</b></div><div><span class="muted">Твоя цель</span><b>${e.reps} повторений</b></div></div>`}
+      <div class="active-exercise-image"><img src="${exerciseImg(e.name)}" alt="${esc(e.name)} — техника выполнения"></div><h2 style="margin-top:15px">${esc(e.name)}</h2>
+      <button class="tech-link" id="techOpen">Смотреть технику →</button><p style="margin-top:6px">Цель: ${e.reps} повторений · ${e.weight||0} кг</p>
+      ${e.previous?`<div class="previous-box"><div><span class="muted">Прошлый раз</span><b>${fmt(e.previous.weight)} кг × ${e.previous.reps}</b></div><div><span class="muted">Предложение</span><b class="blue">${fmt(e.previous.suggestion)} кг</b></div></div>`:`<div class="previous-box"><div><span class="muted">Первый раз</span><b>Запиши результат</b></div><div><span class="muted">Цель</span><b>${e.reps} повторений</b></div></div>`}
     </section>
     <section class="section">
       <div class="section-head"><h2>Подходы</h2><span>${done}/${e.sets}</span></div>
-      <div class="stack">${e.done.map((d,i)=>`
-        <button class="set-btn ${d?"done":""}" data-i="${i}" style="width:100%;display:grid;grid-template-columns:42px 1fr 1fr 30px;align-items:center;text-align:left;background:var(--card);border:1px solid var(--line);padding:12px;border-radius:14px">
-          <b>${i+1}</b><span>${e.weight||0} кг</span><span>${e.reps} повт.</span><b>${d?"✓":"○"}</b>
-        </button>`).join("")}</div>
+      <div class="set-list">${e.done.map((d,i)=>{
+        const s=e.setsData?.[i]||{weight:e.weight||0,reps:e.reps};
+        return `<div class="live-set ${d?"done":""}">
+          <button class="set-number" data-i="${i}">${d?"✓":i+1}</button>
+          <label><span>Вес</span><input class="live-weight" data-i="${i}" type="number" min="0" step=".5" value="${s.weight}"></label>
+          <label><span>Повт.</span><input class="live-reps" data-i="${i}" type="number" min="1" value="${s.reps}"></label>
+          <button class="set-save" data-i="${i}">${d?"Готово":"✓"}</button>
+        </div>`}).join("")}</div>
       <div class="row" style="margin-top:12px">
-        <button class="ghost-btn" id="editC">Изменить</button>
+        <button class="ghost-btn" id="editC">Настройки</button>
         <button class="ghost-btn" id="histC">История</button>
         <button class="primary-btn" id="next" style="width:auto;margin:0;padding:11px 14px">${done===e.sets?"Следующее":"Пропустить"}</button>
       </div>
@@ -487,29 +517,36 @@ function showWorkout(){
       <div class="row" style="margin-top:12px"><button class="ghost-btn" id="tb">${restTimer?"Пауза":"Старт ${e.rest||90} сек"}</button><button class="ghost-btn" id="tr">Сброс</button></div>
     </div></section>
     <button class="danger-btn" id="finish" style="width:100%;margin-top:22px">Завершить тренировку</button>`;
-  $$(".set-btn").forEach(b=>b.onclick=()=>toggleSet(+b.dataset.i));
+  $$(".set-number").forEach(b=>b.onclick=()=>toggleSet(+b.dataset.i));
+  $$(".set-save").forEach(b=>b.onclick=()=>toggleSet(+b.dataset.i));
+  $$(".live-weight,.live-reps").forEach(inp=>inp.oninput=()=>{
+    const i=+inp.dataset.i;
+    e.setsData[i]={weight:+$(".live-weight[data-i='"+i+"']").value||0,reps:Math.max(1,+$(".live-reps[data-i='"+i+"']").value||1)};
+  });
+  $("#techOpen").onclick=()=>exerciseDetail(e.name);
   $("#next").onclick=()=>{activeWorkout.current++;stopTimer();restRemaining=0;showWorkout()};
   $("#editC").onclick=editCurrent;$("#histC").onclick=()=>exerciseHistory(e.name);
   $("#finish").onclick=finishWorkout;$("#tb").onclick=toggleTimer;$("#tr").onclick=()=>{stopTimer();restRemaining=0;showWorkout()};
 }
 function toggleSet(i){
-  const e=activeWorkout.exercises[activeWorkout.current];e.done[i]=!e.done[i];
-  if(e.done[i]){restRemaining=+e.rest||90;startTimer()}else showWorkout();
+  const e=activeWorkout.exercises[activeWorkout.current];
+  const w=document.querySelector(`.live-weight[data-i="${i}"]`),r=document.querySelector(`.live-reps[data-i="${i}"]`);
+  if(w&&r)e.setsData[i]={weight:+w.value||0,reps:Math.max(1,+r.value||1)};
+  e.done[i]=!e.done[i];
+  if(e.done[i]){restRemaining=+e.rest||90;startTimer();}
+  showWorkout();
 }
-function time(s){return`${String(Math.floor(Math.max(0,s)/60)).padStart(2,"0")}:${String(Math.max(0,s)%60).padStart(2,"0")}`}
-function startTimer(){
-  clearInterval(restTimer);restTimer=setInterval(()=>{
-    restRemaining--;const t=$("#timer");if(t)t.textContent=time(restRemaining);
-    if(restRemaining<=0){stopTimer();restRemaining=0;toast("Отдых закончен")}
-  },1000);showWorkout();
-}
-function stopTimer(){clearInterval(restTimer);restTimer=null}
 function toggleTimer(){if(restTimer){stopTimer();showWorkout()}else{if(!restRemaining)restRemaining=90;startTimer()}}
 function finishWorkout(){
   if(!activeWorkout)return;
   stopTimer();
   const records=[];
-  activeWorkout.exercises.forEach(e=>e.done.forEach((d,i)=>d&&records.push({exercise:e.name,weight:+e.weight||0,reps:+e.reps||0,set:i+1})));
+  activeWorkout.exercises.forEach(e=>e.done.forEach((d,i)=>{
+    if(d){
+      const s=e.setsData?.[i]||{weight:+e.weight||0,reps:+e.reps||1};
+      records.push({exercise:e.name,weight:+s.weight||0,reps:+s.reps||1,set:i+1});
+    }
+  }));
   const w={id:Date.now(),name:activeWorkout.dayName,date:new Date().toLocaleString("ru-RU",{day:"2-digit",month:"2-digit",year:"numeric",hour:"2-digit",minute:"2-digit"}),completedSets:records.length,volume:records.reduce((a,r)=>a+r.weight*r.reps,0),records};
   state.history.unshift(w);save();activeWorkout=null;restRemaining=0;workoutResult(w);
 }
@@ -520,12 +557,15 @@ function editCurrent(){
     ${prev?`<div class="previous-box"><div><span class="muted">Прошлый раз</span><b>${fmt(prev.weight)} кг × ${prev.reps}</b></div><div><span class="muted">Предложение</span><b class="blue">${fmt(suggested)} кг</b></div></div>`:""}
     <label>Вес, кг<input id="w" type="number" min="0" step=".5" value="${e.weight||0}"></label>
     <label>Повторения<input id="r" type="number" min="1" value="${e.reps}"></label>
+    <label>Подходов<input id="sets" type="number" min="1" max="20" value="${e.sets||3}"></label>
     <label>Отдых, сек<input id="rs" type="number" min="0" value="${e.rest||90}"></label>
     ${prev?`<button class="ghost-btn" id="usePrev" style="width:100%">Использовать предложение ${fmt(suggested)} кг</button>`:""}
     <button class="primary-btn" id="se">Сохранить</button>
   </div>`);
   if($("#usePrev"))$("#usePrev").onclick=()=>{$("#w").value=suggested};
-  $("#se").onclick=()=>{e.weight=Math.max(0,+$("#w").value||0);e.reps=Math.max(1,+$("#r").value||1);e.rest=Math.max(0,+$("#rs").value||90);closeModal();showWorkout()};
+  $("#se").onclick=()=>{e.weight=Math.max(0,+$("#w").value||0);e.reps=Math.max(1,+$("#r").value||1);e.sets=Math.max(1,+$("#sets").value||e.sets||3);e.rest=Math.max(0,+$("#rs").value||90);
+  const old=e.setsData||[];e.setsData=Array.from({length:e.sets},(_,i)=>old[i]||{weight:e.weight,reps:e.reps});e.done=Array(e.sets).fill(false);
+  closeModal();showWorkout()};
 }
 function editProgram(){
   const q=p();
@@ -623,7 +663,7 @@ function openExercisePicker(q,dayIndex){
 }
 function exercisePickerHtml(q){
   const list=exercises.map((x,i)=>({x,i})).filter(o=>o.x.join(" ").toLowerCase().includes(q));
-  return list.map(o=>`<div class="picker-item"><div><b>${esc(o.x[0])}</b><div class="muted">${o.x[1]} · ${o.x[2]}</div></div><button class="small-btn pick-ex" data-i="${o.i}">Добавить</button></div>`).join("")||`<div class="empty">Ничего не найдено.</div>`;
+  return list.map(o=>`<div class="picker-item"><div class="picker-ex"><img class="picker-thumb" src="${exerciseImg(o.x[0])}" alt=""><div><b>${esc(o.x[0])}</b><div class="muted">${o.x[1]} · ${o.x[2]}</div></div></div><button class="small-btn pick-ex" data-i="${o.i}">Добавить</button></div>`).join("")||`<div class="empty">Ничего не найдено.</div>`;
 }
 function profile(){bodySettings()}
 function openModal(c){$("#sheet").innerHTML=c;$("#modal").classList.remove("hidden")}
