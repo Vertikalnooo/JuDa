@@ -13,10 +13,18 @@ const muscleIcons={"Грудь":"◉","Спина":"◈","Ноги":"⌁","Пл�
 function exerciseMeta(name){return exercises.find(x=>x[0]===name)||null}
 const exerciseAssets=Object.fromEntries(exercises.map((x,i)=>[x[0],`assets/exercises/e${String(i+1).padStart(2,"0")}.svg`]));
 function exerciseImg(name){return exerciseAssets[name]||"assets/exercises/default.svg"}
-function exerciseCardHtml(x){return `<button class="exercise-card" data-ex="${esc(x[0])}"><div class="exercise-thumb"><img src="${exerciseImg(x[0])}" alt="${esc(x[0])} — техника выполнения" loading="lazy"></div><div class="exercise-card-body"><div class="row"><b>${esc(x[0])}</b><span class="exercise-arrow">›</span></div><div class="muted">${esc(x[1])} · ${esc(x[2])}</div><div class="meta-chip inline-chip">${esc(x[3])}</div></div></button>`}
+function exerciseImgTag(name,alt="",cls=""){return `<img class="${cls}" src="${exerciseImg(name)}" alt="${esc(alt)}" loading="lazy" onerror="this.onerror=null;this.src=\'assets/exercises/default.svg\'">`}
+function exerciseCardHtml(x){return `<button class="exercise-card" data-ex="${esc(x[0])}">
+  <div class="exercise-thumb">${exerciseImgTag(x[0],`${x[0]} — техника выполнения`)}</div>
+  <div class="exercise-card-body">
+    <div class="exercise-card-title"><b>${esc(x[0])}</b><span class="exercise-arrow">›</span></div>
+    <div class="exercise-card-tags"><span class="exercise-tag muscle">${esc(x[1])}</span><span class="exercise-tag">${esc(x[2])}</span></div>
+    <div class="exercise-card-bottom"><span>${esc(x[3])}</span><span>Техника →</span></div>
+  </div>
+</button>`}
 function exerciseDetail(name){
   const x=exerciseMeta(name);if(!x)return;
-  openModal(`<div class="exercise-detail"><div class="exercise-detail-image"><img src="${exerciseImg(name)}" alt="${esc(name)} — техника выполнения"></div><div class="detail-tag">${esc(x[1])} · ${esc(x[2])} · ${esc(x[3])}</div><h2>${esc(x[0])}</h2><p class="detail-desc">${esc(x[4])}</p><h3>Техника выполнения</h3><ol class="technique-list">${x[5].map((step,i)=>`<li><span>${i+1}</span><div>${esc(step)}</div></li>`).join("")}</ol><div class="detail-note"><b>Главное</b><span>Работай без рывков, контролируй движение и подбирай вес, который позволяет сохранить технику.</span></div><button class="primary-btn" id="detailAdd">Добавить в тренировку</button></div>`);
+  openModal(`<div class="exercise-detail"><div class="exercise-detail-image">${exerciseImgTag(name,`${name} — техника выполнения`)}</div><div class="detail-tag">${esc(x[1])} · ${esc(x[2])} · ${esc(x[3])}</div><h2>${esc(x[0])}</h2><p class="detail-desc">${esc(x[4])}</p><h3>Техника выполнения</h3><ol class="technique-list">${x[5].map((step,i)=>`<li><span>${i+1}</span><div>${esc(step)}</div></li>`).join("")}</ol><div class="detail-note"><b>Главное</b><span>Работай без рывков, контролируй движение и подбирай вес, который позволяет сохранить технику.</span></div><button class="primary-btn" id="detailAdd">Добавить в тренировку</button></div>`);
   $("#detailAdd").onclick=()=>{closeModal();chooseProgramForExercise(name)};
 }
 function exerciseLibrary(){
@@ -133,10 +141,10 @@ function home(){
     <section class="section">
       <div class="section-head"><h2>Тренировка</h2><span>${d?esc(d.name):"Нет"}</span></div>
       <div class="card">${d?d.exercises.slice(0,3).map(e=>`
-        <div class="food-item">
-          <div class="food-icon exercise-mini"><img src="${exerciseImg(e.name)}" alt=""></div>
-          <div class="grow"><b>${esc(e.name)}</b><div class="muted">${e.sets} × ${e.reps} · ${e.weight||0} кг</div></div>
-        </div>`).join(""):`<div class="empty">Добавь упражнения в программе.</div>`}</div>
+        <button class="workout-exercise-card" data-ex="${esc(e.name)}">
+          <div class="workout-ex-thumb">${exerciseImgTag(e.name,e.name)}</div>
+          <div class="workout-ex-content"><div class="workout-ex-title"><b>${esc(e.name)}</b><span>›</span></div><div class="workout-ex-meta"><span>${e.sets} подхода</span><i>•</i><span>${e.reps} повт.</span>${e.weight?`<i>•</i><span>${e.weight} кг</span>`:""}</div></div>
+        </button>`).join(""):`<div class="empty">Добавь упражнения в программе.</div>`}</div>
     </section>`;
 
   $("#start").onclick=()=>d?startWorkout(q.days.indexOf(d)):editProgram();
@@ -159,10 +167,11 @@ function workouts(){
             <div><b>День ${i+1} · ${esc(d.name)}</b><div class="muted">${d.exercises.length} упражнений</div></div>
             <button class="primary-btn startDay" data-i="${i}" style="width:auto;margin:0;padding:9px 12px">Старт</button>
           </div>
-          ${d.exercises.map(e=>`
-            <button class="food-item exercise-list-item" data-ex="${esc(e.name)}">
-              <div class="food-icon exercise-mini"><img src="${exerciseImg(e.name)}" alt=""></div>
-              <div class="grow"><b>${esc(e.name)}</b><div class="muted">${e.sets} × ${e.reps}${e.weight?` · ${e.weight} кг`:""}</div></div>
+          ${d.exercises.map((e,idx)=>`
+            <button class="exercise-list-card" data-ex="${esc(e.name)}">
+              <div class="exercise-list-number">${idx+1}</div>
+              <div class="exercise-list-thumb">${exerciseImgTag(e.name,e.name)}</div>
+              <div class="exercise-list-content"><div class="exercise-list-title"><b>${esc(e.name)}</b><span>›</span></div><div class="exercise-list-meta"><span>${e.sets} подхода</span><i>•</i><span>${e.reps} повт.</span>${e.weight?`<i>•</i><span>${e.weight} кг</span>`:""}</div></div>
             </button>`).join("")||`<div class="empty">День пустой</div>`}
         </div>`).join("")}</div>
     </section>`;
@@ -494,7 +503,7 @@ function showWorkout(){
     <section class="hero">
       <div class="row"><span class="muted">${esc(activeWorkout.dayName)}</span><span class="blue">${activeWorkout.current+1}/${activeWorkout.exercises.length}</span></div>
       <div class="progress" style="margin-top:13px"><i style="width:${total?Math.round(all/total*100):0}%"></i></div>
-      <div class="active-exercise-image"><img src="${exerciseImg(e.name)}" alt="${esc(e.name)} — техника выполнения"></div><h2 style="margin-top:15px">${esc(e.name)}</h2>
+      <div class="active-exercise-image">${exerciseImgTag(e.name,`${e.name} — техника выполнения`)}</div><h2 style="margin-top:15px">${esc(e.name)}</h2>
       <button class="tech-link" id="techOpen">Смотреть технику →</button><p style="margin-top:6px">Цель: ${e.reps} повторений · ${e.weight||0} кг</p>
       ${e.previous?`<div class="previous-box"><div><span class="muted">Прошлый раз</span><b>${fmt(e.previous.weight)} кг × ${e.previous.reps}</b></div><div><span class="muted">Предложение</span><b class="blue">${fmt(e.previous.suggestion)} кг</b></div></div>`:`<div class="previous-box"><div><span class="muted">Первый раз</span><b>Запиши результат</b></div><div><span class="muted">Цель</span><b>${e.reps} повторений</b></div></div>`}
     </section>
@@ -664,7 +673,7 @@ function openExercisePicker(q,dayIndex){
 }
 function exercisePickerHtml(q){
   const list=exercises.map((x,i)=>({x,i})).filter(o=>o.x.join(" ").toLowerCase().includes(q));
-  return list.map(o=>`<div class="picker-item"><div class="picker-ex"><img class="picker-thumb" src="${exerciseImg(o.x[0])}" alt=""><div><b>${esc(o.x[0])}</b><div class="muted">${o.x[1]} · ${o.x[2]}</div></div></div><button class="small-btn pick-ex" data-i="${o.i}">Добавить</button></div>`).join("")||`<div class="empty">Ничего не найдено.</div>`;
+  return list.map(o=>`<div class="picker-item"><div class="picker-ex">${exerciseImgTag(o.x[0],o.x[0],"picker-thumb")}<div><b>${esc(o.x[0])}</b><div class="muted">${o.x[1]} · ${o.x[2]}</div></div></div><button class="small-btn pick-ex" data-i="${o.i}">Добавить</button></div>`).join("")||`<div class="empty">Ничего не найдено.</div>`;
 }
 function profile(){bodySettings()}
 function openModal(c){$("#sheet").innerHTML=c;$("#modal").classList.remove("hidden")}
