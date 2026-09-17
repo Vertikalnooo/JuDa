@@ -24,17 +24,71 @@ function exerciseCardHtml(x){return `<button class="exercise-card" data-ex="${es
 </button>`}
 function exerciseDetail(name){
   const x=exerciseMeta(name);if(!x)return;
-  openModal(`<div class="exercise-detail"><div class="exercise-detail-image">${exerciseImgTag(name,`${name} — техника выполнения`)}</div><div class="detail-tag">${esc(x[1])} · ${esc(x[2])} · ${esc(x[3])}</div><h2>${esc(x[0])}</h2><p class="detail-desc">${esc(x[4])}</p><h3>Техника выполнения</h3><ol class="technique-list">${x[5].map((step,i)=>`<li><span>${i+1}</span><div>${esc(step)}</div></li>`).join("")}</ol><div class="detail-note"><b>Главное</b><span>Работай без рывков, контролируй движение и подбирай вес, который позволяет сохранить технику.</span></div><button class="primary-btn" id="detailAdd">Добавить в тренировку</button></div>`);
+  const all=JSON.parse(localStorage.getItem("juda_favorites")||"[]");
+  const fav=all.includes(name);
+  const muscleCount=exercises.filter(e=>e[1]===x[1]).length;
+  openModal(`<div class="exercise-detail v14-detail">
+    <div class="detail-topline"><span class="detail-back">Упражнение</span><button class="detail-fav ${fav?"active":""}" id="detailFav" aria-label="Избранное">${fav?"★":"☆"}</button></div>
+    <div class="exercise-detail-image detail-hero-image">${exerciseImgTag(name,`${name} — техника выполнения`)}</div>
+    <div class="detail-badges"><span class="detail-tag">${esc(x[1])}</span><span class="detail-tag muted-tag">${esc(x[2])}</span><span class="detail-tag muted-tag">${esc(x[3])}</span></div>
+    <h2>${esc(x[0])}</h2><p class="detail-desc">${esc(x[4])}</p>
+    <div class="detail-facts"><div><b>${muscleCount}</b><span>упражнений на группу</span></div><div><b>${x[2]==="Базовое"?"База":"Изоляция"}</b><span>тип нагрузки</span></div><div><b>3×8–12</b><span>стартовый диапазон</span></div></div>
+    <div class="detail-section-title"><h3>Техника выполнения</h3><span>${x[5].length} шага</span></div>
+    <ol class="technique-list">${x[5].map((step,i)=>`<li><span>${i+1}</span><div>${esc(step)}</div></li>`).join("")}</ol>
+    <div class="detail-note warning"><b>Безопасность</b><span>Начни с комфортного веса. Если техника нарушается или появляется острая боль — остановись и снизь нагрузку.</span></div><div class="detail-section-title related-title"><h3>Похожие упражнения</h3><span>на ту же группу</span></div><div class="related-exercises">${exercises.filter(e=>e[1]===x[1]&&e[0]!==x[0]).slice(0,3).map(e=>`<button class="related-card" data-related="${esc(e[0])}"><div>${exerciseImgTag(e[0],e[0],"related-thumb")}</div><span>${esc(e[0])}</span><b>›</b></button>`).join("")}</div>
+    <div class="detail-actions"><button class="ghost-btn" id="detailFav2">${fav?"★ В избранном":"☆ В избранное"}</button><button class="primary-btn" id="detailAdd">Добавить в тренировку</button></div>
+  </div>`);
+  const toggleFav=()=>{let list=JSON.parse(localStorage.getItem("juda_favorites")||"[]");if(list.includes(name))list=list.filter(v=>v!==name);else list.push(name);localStorage.setItem("juda_favorites",JSON.stringify(list));exerciseDetail(name)};
+  $("#detailFav").onclick=toggleFav;$("#detailFav2").onclick=toggleFav;
   $("#detailAdd").onclick=()=>{closeModal();chooseProgramForExercise(name)};
+  $$(".related-card").forEach(b=>b.onclick=()=>exerciseDetail(b.dataset.related));
 }
+function getFavorites(){try{return JSON.parse(localStorage.getItem("juda_favorites")||"[]")}catch(e){return[]}}
+function isFavorite(name){return getFavorites().includes(name)}
+function toggleFavorite(name){let list=getFavorites();list=list.includes(name)?list.filter(v=>v!==name):[...list,name];localStorage.setItem("juda_favorites",JSON.stringify(list));return list.includes(name)}
 function exerciseLibrary(){
-  const q=(window.libraryQuery||"").toLowerCase();
-  const list=exercises.filter(x=>x.join(" ").toLowerCase().includes(q));
+  const query=(window.libraryQuery||"").trim().toLowerCase();
+  const muscle=window.libraryMuscle||"Все";
+  const type=window.libraryType||"Все";
+  const equip=window.libraryEquip||"Все";
+  const onlyFav=!!window.libraryFav;
+  const allEquip=[...new Set(exercises.map(x=>x[3]))].sort((a,b)=>a.localeCompare(b,"ru"));
+  const favs=new Set(getFavorites());
+  const list=exercises.filter(x=>{
+    const hay=x.join(" ").toLowerCase();
+    return (!query||hay.includes(query)) && (muscle==="Все"||x[1]===muscle) && (type==="Все"||x[2]===type) && (equip==="Все"||x[3]===equip) && (!onlyFav||favs.has(x[0]));
+  });
   const groups=muscleOrder.map(m=>[m,list.filter(x=>x[1]===m)]).filter(g=>g[1].length);
+  const setFilter=(key,val)=>{window[key]=val;exerciseLibrary()};
+  const chips=muscleOrder.map(m=>`<button class="filter-chip ${muscle===m?"active":""}" data-muscle="${esc(m)}">${esc(m)} <span>${exercises.filter(x=>x[1]===m).length}</span></button>`).join("");
+  const favLabel=onlyFav?`★ Избранное (${favs.size})`:`☆ Избранное`;
+  const resultText=list.length===exercises.length?`${exercises.length} упражнений`:`Найдено ${list.length}`;
+  const cards=groups.map(([m,items])=>`<section class="section library-group"><div class="section-head"><h2>${muscleIcons[m]||"•"} ${m}</h2><span>${items.length}</span></div><div class="exercise-grid">${items.map(exerciseCardHtml).join("")}</div></section>`).join("");
+  const activeCount=[muscle!=="Все",type!=="Все",equip!=="Все",onlyFav,!!query].filter(Boolean).length;
+  const clear=activeCount?`<button class="filter-clear" id="clearFilters">Сбросить ${activeCount} фильтр${activeCount===1?"":"а"}</button>`:"";
+  const muscleAll=`<button class="filter-chip ${muscle==="Все"?"active":""}" data-muscle="Все">Все <span>${exercises.length}</span></button>`;
+  const typeChips=["Все","Базовое","Изолирующее"].map(v=>`<button class="mini-filter ${type===v?"active":""}" data-type="${esc(v)}">${v}</button>`).join("");
+  const equipOptions=["Все",...allEquip].map(v=>`<option value="${esc(v)}" ${equip===v?"selected":""}>${esc(v)}</option>`).join("");
+  const favButton=`<button class="favorite-filter ${onlyFav?"active":""}" id="favoriteFilter">${favLabel}</button>`;
+  const filteredSummary=onlyFav && !favs.size?`<div class="card empty">Добавь упражнения в избранное — они появятся здесь.</div>`:(list.length?cards:`<div class="card empty">Ничего не найдено. Попробуй изменить фильтры или поиск.</div>`);
   $("#pageTitle").textContent="Библиотека";
   $$(".nav-item").forEach(x=>x.classList.remove("active"));
-  $("#app").innerHTML=`<section class="hero compact"><span class="tag">БИБЛИОТЕКА</span><h2>${exercises.length} упражнений</h2><p>Подробная техника, мышечная группа и оборудование.</p><input id="librarySearch" class="search library-search" placeholder="Поиск упражнения или мышцы" value="${esc(window.libraryQuery||"")}"></section><div class="library-groups">${groups.map(([m,items])=>`<section class="section"><div class="section-head"><h2>${muscleIcons[m]||"•"} ${m}</h2><span>${items.length}</span></div><div class="exercise-grid">${items.map(exerciseCardHtml).join("")}</div></section>`).join("")||`<div class="card empty">Ничего не найдено.</div>`}</div>`;
+  $("#app").innerHTML=`
+    <section class="library-head">
+      <div class="library-head-row"><div><span class="tag">БИБЛИОТЕКА</span><h2>${resultText}</h2><p>Выбирай упражнение, открывай технику или добавляй его в программу.</p></div>${favButton}</div>
+      <div class="library-search-wrap"><span>⌕</span><input id="librarySearch" class="search" placeholder="Поиск упражнения, мышцы или оборудования" value="${esc(window.libraryQuery||"")}"></div>
+      <div class="filter-label"><span>Мышечная группа</span>${clear}</div>
+      <div class="filter-scroll">${muscleAll}${chips}</div>
+      <div class="library-filter-row"><div><small>Тип</small><div class="mini-filters">${typeChips}</div></div><label class="select-filter"><small>Оборудование</small><select id="equipFilter">${equipOptions}</select></label></div>
+    </section>
+    <section class="library-summary"><div><b>${list.length}</b><span>показано</span></div><div><b>${favs.size}</b><span>в избранном</span></div><div><b>${muscleOrder.length}</b><span>групп мышц</span></div></section>
+    <div class="library-groups">${filteredSummary}</div>`;
   $("#librarySearch").oninput=e=>{window.libraryQuery=e.target.value;exerciseLibrary()};
+  $("#equipFilter").onchange=e=>setFilter("libraryEquip",e.target.value);
+  $("#favoriteFilter").onclick=()=>{window.libraryFav=!window.libraryFav;exerciseLibrary()};
+  $("#clearFilters")?.addEventListener("click",()=>{window.libraryQuery="";window.libraryMuscle="Все";window.libraryType="Все";window.libraryEquip="Все";window.libraryFav=false;exerciseLibrary()});
+  $$("[data-muscle]").forEach(b=>b.onclick=()=>setFilter("libraryMuscle",b.dataset.muscle));
+  $$("[data-type]").forEach(b=>b.onclick=()=>setFilter("libraryType",b.dataset.type));
   $$(".exercise-card").forEach(b=>b.onclick=()=>exerciseDetail(b.dataset.ex));
 }
 function chooseProgramForExercise(name){
