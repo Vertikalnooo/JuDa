@@ -11,7 +11,8 @@ const exercises=[["Жим штанги лёжа","Грудь","Базовое","
 const muscleOrder=["Грудь","Спина","Ноги","Плечи","Руки","Пресс","Ягодицы","Икры"];
 const muscleIcons={"Грудь":"◉","Спина":"◈","Ноги":"⌁","Плечи":"◇","Руки":"◌","Пресс":"▦","Ягодицы":"◆","Икры":"◍"};
 function exerciseMeta(name){return exercises.find(x=>x[0]===name)||null}
-function exerciseImg(name){const m=exerciseMeta(name);return m?`assets/exercises/${encodeURI(m[0])}.svg`:"assets/exercises/default.svg"}
+const exerciseAssets=Object.fromEntries(exercises.map((x,i)=>[x[0],`assets/exercises/e${String(i+1).padStart(2,"0")}.svg`]));
+function exerciseImg(name){return exerciseAssets[name]||"assets/exercises/default.svg"}
 function exerciseCardHtml(x){return `<button class="exercise-card" data-ex="${esc(x[0])}"><div class="exercise-thumb"><img src="${exerciseImg(x[0])}" alt="${esc(x[0])} — техника выполнения" loading="lazy"></div><div class="exercise-card-body"><div class="row"><b>${esc(x[0])}</b><span class="exercise-arrow">›</span></div><div class="muted">${esc(x[1])} · ${esc(x[2])}</div><div class="meta-chip inline-chip">${esc(x[3])}</div></div></button>`}
 function exerciseDetail(name){
   const x=exerciseMeta(name);if(!x)return;
